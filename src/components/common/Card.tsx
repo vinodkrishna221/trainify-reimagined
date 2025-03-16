@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface CardProps {
@@ -10,13 +10,13 @@ interface CardProps {
   onClick?: () => void;
 }
 
-const Card = ({ 
+const Card = forwardRef<HTMLDivElement, CardProps>(({ 
   className, 
   glassEffect = false, 
   interactive = false, 
   children, 
   onClick 
-}: CardProps) => {
+}, ref) => {
   return (
     <div 
       className={cn(
@@ -26,44 +26,71 @@ const Card = ({
         className
       )}
       onClick={onClick}
+      ref={ref}
     >
       {children}
     </div>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 interface CardHeaderProps {
   className?: string;
   children: React.ReactNode;
 }
 
-const CardHeader = ({ className, children }: CardHeaderProps) => (
-  <div className={cn('p-5 border-b border-gray-100', className)}>
+const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(({ 
+  className, 
+  children 
+}, ref) => (
+  <div 
+    className={cn('p-5 border-b border-gray-100', className)}
+    ref={ref}
+  >
     {children}
   </div>
-);
+));
+
+CardHeader.displayName = 'CardHeader';
 
 interface CardContentProps {
   className?: string;
   children: React.ReactNode;
 }
 
-const CardContent = ({ className, children }: CardContentProps) => (
-  <div className={cn('p-5', className)}>
+const CardContent = forwardRef<HTMLDivElement, CardContentProps>(({ 
+  className, 
+  children 
+}, ref) => (
+  <div 
+    className={cn('p-5', className)}
+    ref={ref}
+  >
     {children}
   </div>
-);
+));
+
+CardContent.displayName = 'CardContent';
 
 interface CardFooterProps {
   className?: string;
   children: React.ReactNode;
 }
 
-const CardFooter = ({ className, children }: CardFooterProps) => (
-  <div className={cn('p-5 border-t border-gray-100', className)}>
+const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(({ 
+  className, 
+  children 
+}, ref) => (
+  <div 
+    className={cn('p-5 border-t border-gray-100', className)}
+    ref={ref}
+  >
     {children}
   </div>
-);
+));
+
+CardFooter.displayName = 'CardFooter';
 
 Card.Header = CardHeader;
 Card.Content = CardContent;
