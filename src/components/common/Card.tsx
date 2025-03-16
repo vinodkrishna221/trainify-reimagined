@@ -10,6 +10,12 @@ interface CardProps {
   onClick?: () => void;
 }
 
+type CardComponent = React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>> & {
+  Header: typeof CardHeader;
+  Content: typeof CardContent;
+  Footer: typeof CardFooter;
+};
+
 const Card = forwardRef<HTMLDivElement, CardProps>(({ 
   className, 
   glassEffect = false, 
@@ -31,7 +37,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({
       {children}
     </div>
   );
-});
+}) as CardComponent;
 
 Card.displayName = 'Card';
 
@@ -92,6 +98,7 @@ const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(({
 
 CardFooter.displayName = 'CardFooter';
 
+// Assign the compound components to Card
 Card.Header = CardHeader;
 Card.Content = CardContent;
 Card.Footer = CardFooter;
