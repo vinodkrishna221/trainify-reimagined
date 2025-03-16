@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Calendar, Ticket, Search, AlertTriangle, TicketX, X, Check, Indian } from 'lucide-react';
+import { Calendar, Ticket, Search, AlertTriangle, TicketX, X, Check } from 'lucide-react';
 import { 
   Dialog,
   DialogContent,
