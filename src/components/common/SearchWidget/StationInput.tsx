@@ -53,18 +53,18 @@ const StationInput: React.FC<StationInputProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute z-50 mt-1 w-full md:w-[120%] md:min-w-[300px] bg-white rounded-lg shadow-xl border border-gray-300"
+              className="absolute z-50 mt-1 w-full md:w-[300px] lg:w-[350px] bg-white rounded-lg shadow-xl border border-gray-300"
             >
-              <div className="p-3">
-                <div className="text-sm font-semibold text-gray-800 px-2 py-1.5 bg-gray-100 rounded mb-2">
+              <div className="p-4">
+                <div className="text-sm font-semibold text-gray-800 px-3 py-2 bg-gray-100 rounded mb-3">
                   Popular Stations
                 </div>
-                <div className="max-h-80 overflow-y-auto py-1">
+                <div className="max-h-[300px] overflow-y-auto py-2">
                   {stations.map((station) => (
                     <motion.div
                       key={station.code}
                       whileHover={{ backgroundColor: "#f3f4f6" }}
-                      className="px-4 py-3 rounded-md cursor-pointer transition-colors hover:bg-gray-100 my-1.5"
+                      className="px-4 py-3.5 rounded-md cursor-pointer transition-colors hover:bg-gray-100 my-2"
                       onClick={() => onSelect(station)}
                       role="option"
                       aria-selected={value === `${station.name} (${station.code})`}

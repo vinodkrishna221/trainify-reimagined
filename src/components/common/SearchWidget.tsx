@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import StationInput from './SearchWidget/StationInput';
 import { usePrefetch } from '@/App';
+import PrefetchLink from './PrefetchLink';
 
 interface Station {
   code: string;
@@ -66,10 +67,10 @@ const SearchWidget = memo(() => {
 
   return (
     <Card glassEffect className="w-full max-w-4xl mx-auto">
-      <Card.Content className="p-6">
+      <Card.Content className="p-6 md:p-8">
         <h3 className="text-xl font-semibold text-irctc-dark-gray mb-6">Book Your Train Ticket</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-4 mb-8">
           {/* From Station */}
           <div className="md:col-span-3">
             <StationInput
@@ -110,16 +111,18 @@ const SearchWidget = memo(() => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <Button 
-              variant="accent" 
-              size="lg" 
-              icon={<Train className="w-4 h-4" />}
-              className="w-full sm:w-auto min-w-[150px] bg-orange-500 hover:bg-orange-600"
-              onClick={handleSearch}
-              onMouseEnter={handleMouseEnterSearch}
-            >
-              Book Ticket
-            </Button>
+            <PrefetchLink to="/book-train">
+              <Button 
+                variant="accent" 
+                size="lg" 
+                icon={<Train className="w-4 h-4" />}
+                className="w-full sm:w-auto min-w-[150px] bg-orange-500 hover:bg-orange-600"
+                onClick={handleSearch}
+                onMouseEnter={handleMouseEnterSearch}
+              >
+                Book Ticket
+              </Button>
+            </PrefetchLink>
           </motion.div>
         </div>
       </Card.Content>
