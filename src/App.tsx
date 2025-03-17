@@ -25,7 +25,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      suspense: false, // We'll handle loading states with our own Suspense boundaries
+      // Removed the 'suspense: false' property that was causing the error
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1
     },
