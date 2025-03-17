@@ -12,6 +12,7 @@ import TrackTrain from "./pages/TrackTrain";
 import TrainSchedule from "./pages/TrainSchedule";
 import CancelTicket from "./pages/CancelTicket";
 import PNRStatus from "./pages/PNRStatus";
+import FareAlert from "./pages/FareAlert";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/train-schedule" element={<TrainSchedule />} />
           <Route path="/cancel-ticket" element={<CancelTicket />} />
           <Route path="/pnr-status" element={<PNRStatus />} />
+          <Route path="/fare-alert" element={<FareAlert />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
