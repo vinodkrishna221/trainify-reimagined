@@ -71,6 +71,20 @@
   p {
     @apply leading-relaxed;
   }
+  
+  /* Accessibility improvements */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-irctc-royal-blue;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
@@ -113,6 +127,34 @@
   .animate-on-scroll.in-view {
     @apply opacity-100 translate-y-0;
   }
+  
+  /* Animation performance optimizations */
+  .hardware-accelerated {
+    @apply will-change-transform;
+    transform: translateZ(0);
+  }
+  
+  /* Mobile optimizations */
+  .mobile-padding {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+  
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Accessibility classes */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+  
+  .skip-link {
+    @apply absolute left-1/2 -translate-x-1/2 -top-10 bg-white px-4 py-2 z-50 rounded shadow-md transition-transform;
+  }
+  
+  .skip-link:focus {
+    @apply top-4;
+  }
 }
 
 @layer utilities {
@@ -122,5 +164,25 @@
   
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-irctc-royal-blue to-irctc-light-blue;
+  }
+  
+  /* Optimized animation utilities */
+  .optimize-animation {
+    @apply will-change-transform will-change-opacity;
+    backface-visibility: hidden;
+  }
+  
+  /* Responsive utilities */
+  .responsive-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .mobile-friendly-tap {
+    @apply p-3; /* Minimum 44px touch target per WCAG */
+  }
+  
+  /* Accessibility utilities */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-irctc-royal-blue;
   }
 }
