@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import StationInput from './SearchWidget/StationInput';
+import { usePrefetch } from '@/App';
 
 interface Station {
   code: string;
@@ -27,6 +28,7 @@ const popularStations: Station[] = [
 // Memoize the component for better performance
 const SearchWidget = memo(() => {
   const navigate = useNavigate();
+  const prefetchRoute = usePrefetch();
   const [fromStation, setFromStation] = useState('');
   const [toStation, setToStation] = useState('');
   const [journeyDate, setJourneyDate] = useState('');
@@ -55,6 +57,11 @@ const SearchWidget = memo(() => {
 
   const handleSearch = () => {
     navigate('/book-train');
+  };
+
+  const handleMouseEnterSearch = () => {
+    // Prefetch the next page when hovering over the search button
+    prefetchRoute('/book-train');
   };
 
   return (
@@ -109,6 +116,7 @@ const SearchWidget = memo(() => {
               icon={<Train className="w-4 h-4" />}
               className="w-full sm:w-auto min-w-[150px] bg-orange-500 hover:bg-orange-600"
               onClick={handleSearch}
+              onMouseEnter={handleMouseEnterSearch}
             >
               Book Ticket
             </Button>
