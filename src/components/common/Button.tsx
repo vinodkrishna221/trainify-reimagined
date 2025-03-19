@@ -2,7 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'link';
+type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'link' | 'select';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,6 +12,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right';
   isLoading?: boolean;
   fullWidth?: boolean;
+  isSelected?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -23,6 +24,7 @@ const Button = ({
   iconPosition = 'left',
   isLoading = false,
   fullWidth = false,
+  isSelected = false,
   className,
   children,
   ...props
@@ -36,6 +38,9 @@ const Button = ({
     outline: "border border-irctc-royal-blue text-irctc-royal-blue bg-transparent hover:bg-irctc-royal-blue/5 focus:ring-irctc-royal-blue/30",
     ghost: "bg-transparent text-irctc-royal-blue hover:bg-irctc-royal-blue/5 focus:ring-irctc-royal-blue/30",
     link: "bg-transparent text-irctc-royal-blue underline-offset-4 hover:underline focus:ring-0 p-0",
+    select: isSelected 
+      ? "bg-[#FEF7CD] text-irctc-dark-gray border border-amber-300 hover:bg-amber-100 focus:ring-amber-300/30"
+      : "bg-[#FFDEE2] text-irctc-dark-gray border border-red-200 hover:bg-red-100 focus:ring-red-300/30",
   };
   
   const sizeStyles = {
