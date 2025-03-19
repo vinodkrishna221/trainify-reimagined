@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User, ChevronDown, Train, Package, Plane, Hotel, CreditCard, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Button from './Button';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface NavItem {
   label: string;
@@ -154,105 +155,106 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-irctc-royal-blue/30"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? 
-            <X className="w-6 h-6 text-irctc-dark-gray" /> : 
-            <Menu className="w-6 h-6 text-irctc-dark-gray" />
-          }
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="relative fixed inset-0 z-40 lg:hidden bg-white" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
-          <div className="p-4 space-y-3 overflow-y-auto h-full pb-24">
-            {/* Remove duplicate logo from mobile menu */}
-            <div className="border-b border-gray-200 pb-3">
-              <button 
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-1 rounded-md ml-auto block"
+        <div className="lg:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-irctc-royal-blue/30"
+                aria-label="Open main menu"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <Menu className="w-6 h-6 text-irctc-dark-gray" />
               </button>
-            </div>
-            
-            {navItems.map((item) => (
-              <div key={item.label} className="border-b border-gray-100 py-2.5">
-                <div 
-                  className={cn(
-                    "flex items-center justify-between py-1.5",
-                    item.highlight && "text-irctc-orange font-medium"
-                  )}
-                  onClick={() => item.children && toggleDropdown(item.label)}
-                >
-                  <div className="flex items-center gap-3">
-                    {item.icon && <span className="text-irctc-medium-gray">{item.icon}</span>}
-                    <span className="font-medium text-irctc-dark-gray">{item.label}</span>
-                  </div>
-                  {item.children && (
-                    <ChevronDown className={cn("w-5 h-5 text-gray-400 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
-                  )}
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-full max-w-[350px] bg-white">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <div className="flex items-center">
+                  <span className="text-irctc-royal-blue font-poppins font-bold text-xl">IRCTC</span>
+                  <span className="text-irctc-orange ml-1 text-sm">Express</span>
                 </div>
-
-                {/* Mobile Dropdown */}
-                {item.children && openDropdown === item.label && (
-                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-white rounded-md p-2">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        to={child.href}
-                        className="block py-1.5 px-3 text-irctc-medium-gray hover:bg-gray-100 rounded-md"
+              </div>
+              
+              <div className="overflow-y-auto h-full pb-24">
+                <nav className="py-2">
+                  {navItems.map((item) => (
+                    <div key={item.label} className="px-4">
+                      <div 
+                        className={cn(
+                          "flex items-center justify-between py-3.5 border-b border-gray-100",
+                          item.highlight && "text-irctc-orange font-medium"
+                        )}
+                        onClick={() => item.children && toggleDropdown(item.label)}
                       >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                        <div className="flex items-center gap-3">
+                          {item.icon && <span className="text-irctc-medium-gray">{item.icon}</span>}
+                          <span className={cn(
+                            "font-medium",
+                            location.pathname === item.href ? "text-irctc-royal-blue" : "text-irctc-dark-gray"
+                          )}>
+                            {item.label}
+                          </span>
+                        </div>
+                        {item.children && (
+                          <ChevronDown 
+                            className={cn(
+                              "w-5 h-5 text-gray-400 transition-transform", 
+                              openDropdown === item.label ? "rotate-180" : ""
+                            )} 
+                          />
+                        )}
+                      </div>
 
-            {/* Mobile Authentication Buttons */}
-            <div className="pt-4 flex flex-col gap-3 fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
-              <Button 
-                variant="outline" 
-                fullWidth 
-                size="sm"
-                icon={<User className="w-4 h-4" />}
-                onClick={() => window.location.href = '/login'}
-                className="h-10"
-              >
-                Login
-              </Button>
-              <Button 
-                variant="primary" 
-                fullWidth
-                size="sm"
-                onClick={() => window.location.href = '/login?signup=true'}
-                className="h-10"
-              >
-                Register
-              </Button>
-            </div>
+                      {/* Mobile Dropdown */}
+                      {item.children && openDropdown === item.label && (
+                        <div className="mt-1 space-y-1 bg-white rounded-md py-2 pl-8">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.label}
+                              to={child.href}
+                              className="block py-2.5 text-irctc-medium-gray hover:text-irctc-royal-blue"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </nav>
 
-            {/* Quick Actions for Mobile */}
-            <div className="pt-4 mt-4">
-              <h3 className="text-sm font-medium text-gray-500 mb-3">Quick Actions</h3>
-              <div className="grid grid-cols-1 gap-3">
-                <Link to="/book-train" className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
-                  <div className="flex flex-col items-center">
-                    <Train className="w-6 h-6 text-irctc-royal-blue mb-2" />
-                    <h3 className="text-base font-medium">Book Ticket</h3>
-                    <p className="text-xs text-gray-500 mt-1">Access quickly</p>
+                {/* Quick Actions for Mobile */}
+                <div className="px-4 pt-6">
+                  <h3 className="text-sm font-medium text-gray-500 mb-3">Quick Actions</h3>
+                  <div className="grid grid-cols-1">
+                    <Link to="/book-train" className="bg-white border border-gray-200 rounded-lg p-3 mb-3 flex items-center justify-center gap-3 hover:shadow-sm transition-shadow">
+                      <Train className="w-5 h-5 text-irctc-royal-blue" />
+                      <span className="text-sm font-medium">Book Ticket</span>
+                    </Link>
                   </div>
-                </Link>
+                </div>
+                
+                {/* Mobile Authentication Buttons */}
+                <div className="px-4 pt-4 pb-6 fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex flex-col gap-2">
+                  <Button 
+                    variant="outline" 
+                    fullWidth 
+                    icon={<User className="w-4 h-4" />}
+                    onClick={() => window.location.href = '/login'}
+                  >
+                    Login
+                  </Button>
+                  <Button 
+                    variant="primary" 
+                    fullWidth
+                    onClick={() => window.location.href = '/login?signup=true'}
+                  >
+                    Register
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
+            </SheetContent>
+          </Sheet>
         </div>
-      )}
+      </div>
     </header>
   );
 };
