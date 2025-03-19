@@ -167,17 +167,13 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="relative fixed inset-0 z-40 lg:hidden bg-white animate-fade-in" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
-          <div className="p-4 space-y-3 overflow-y-auto h-full pb-20">
-            {/* Logo in mobile menu */}
-            <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-              <div className="flex items-center">
-                <span className="text-irctc-royal-blue font-poppins font-bold text-xl">IRCTC</span>
-                <span className="text-irctc-orange ml-1 text-sm">Express</span>
-              </div>
+        <div className="fixed inset-0 z-40 lg:hidden bg-white" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
+          <div className="p-4 space-y-3 overflow-y-auto h-full pb-24">
+            {/* Remove duplicate logo from mobile menu */}
+            <div className="border-b border-gray-200 pb-3">
               <button 
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1 rounded-md"
+                className="p-1 rounded-md ml-auto block"
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
@@ -203,7 +199,7 @@ const Navbar = () => {
 
                 {/* Mobile Dropdown */}
                 {item.children && openDropdown === item.label && (
-                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-white rounded-md p-2 shadow-sm">
+                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-white rounded-md p-2">
                     {item.children.map((child) => (
                       <Link
                         key={child.label}
@@ -239,6 +235,20 @@ const Navbar = () => {
               >
                 Register
               </Button>
+            </div>
+
+            {/* Quick Actions for Mobile */}
+            <div className="pt-4 mt-4">
+              <h3 className="text-sm font-medium text-gray-500 mb-3">Quick Actions</h3>
+              <div className="grid grid-cols-1 gap-3">
+                <Link to="/book-train" className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
+                  <div className="flex flex-col items-center">
+                    <Train className="w-6 h-6 text-irctc-royal-blue mb-2" />
+                    <h3 className="text-base font-medium">Book Ticket</h3>
+                    <p className="text-xs text-gray-500 mt-1">Access quickly</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
