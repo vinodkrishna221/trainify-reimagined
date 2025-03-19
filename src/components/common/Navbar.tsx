@@ -203,7 +203,7 @@ const Navbar = () => {
 
                 {/* Mobile Dropdown */}
                 {item.children && openDropdown === item.label && (
-                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-gray-50 rounded-md p-2">
+                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-white rounded-md p-2 shadow-sm">
                     {item.children.map((child) => (
                       <Link
                         key={child.label}
