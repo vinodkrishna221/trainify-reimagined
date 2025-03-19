@@ -167,7 +167,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden bg-white" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
+        <div className="relative fixed inset-0 z-40 lg:hidden bg-white" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
           <div className="p-4 space-y-3 overflow-y-auto h-full pb-24">
             {/* Remove duplicate logo from mobile menu */}
             <div className="border-b border-gray-200 pb-3">
