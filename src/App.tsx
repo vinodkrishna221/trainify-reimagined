@@ -70,7 +70,6 @@ export const usePrefetch = () => React.useContext(PrefetchContext);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Removed the 'suspense: false' property that was causing the error
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1
     },

@@ -53,7 +53,7 @@ const StationInput: React.FC<StationInputProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute z-50 mt-1 w-full md:w-[300px] lg:w-[350px] bg-white rounded-lg shadow-xl border border-gray-300"
+              className="absolute z-50 mt-1 w-full md:w-[300px] lg:w-[350px] bg-white rounded-lg shadow-xl border border-gray-300 max-h-[75vh] md:max-h-[350px] overflow-hidden"
             >
               <div className="p-4">
                 <div className="text-sm font-semibold text-gray-800 px-3 py-2 bg-gray-100 rounded mb-3">

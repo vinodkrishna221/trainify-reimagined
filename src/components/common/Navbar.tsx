@@ -167,34 +167,48 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden bg-white animate-fade-in" style={{ marginTop: '64px' }}>
-          <div className="p-4 space-y-4 overflow-y-auto max-h-screen pb-20">
+        <div className="fixed inset-0 z-40 lg:hidden bg-white animate-fade-in" style={{ top: '64px', height: 'calc(100% - 64px)' }}>
+          <div className="p-4 space-y-3 overflow-y-auto h-full pb-20">
+            {/* Logo in mobile menu */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+              <div className="flex items-center">
+                <span className="text-irctc-royal-blue font-poppins font-bold text-xl">IRCTC</span>
+                <span className="text-irctc-orange ml-1 text-sm">Express</span>
+              </div>
+              <button 
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1 rounded-md"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            
             {navItems.map((item) => (
-              <div key={item.label} className="border-b border-gray-100 pb-3">
+              <div key={item.label} className="border-b border-gray-100 py-2.5">
                 <div 
                   className={cn(
-                    "flex items-center justify-between py-2",
+                    "flex items-center justify-between py-1.5",
                     item.highlight && "text-irctc-orange font-medium"
                   )}
                   onClick={() => item.children && toggleDropdown(item.label)}
                 >
-                  <div className="flex items-center gap-2">
-                    {item.icon && <span className="text-irctc-royal-blue">{item.icon}</span>}
-                    <span className="font-medium">{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    {item.icon && <span className="text-irctc-medium-gray">{item.icon}</span>}
+                    <span className="font-medium text-irctc-dark-gray">{item.label}</span>
                   </div>
                   {item.children && (
-                    <ChevronDown className={cn("w-5 h-5 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
+                    <ChevronDown className={cn("w-5 h-5 text-gray-400 transition-transform", openDropdown === item.label ? "rotate-180" : "")} />
                   )}
                 </div>
 
                 {/* Mobile Dropdown */}
                 {item.children && openDropdown === item.label && (
-                  <div className="mt-2 ml-6 space-y-2 animate-slide-down">
+                  <div className="mt-1.5 ml-7 space-y-1.5 animate-slide-down bg-gray-50 rounded-md p-2">
                     {item.children.map((child) => (
                       <Link
                         key={child.label}
                         to={child.href}
-                        className="block py-2 text-irctc-medium-gray"
+                        className="block py-1.5 px-3 text-irctc-medium-gray hover:bg-gray-100 rounded-md"
                       >
                         {child.label}
                       </Link>
@@ -205,19 +219,23 @@ const Navbar = () => {
             ))}
 
             {/* Mobile Authentication Buttons */}
-            <div className="mt-6 flex flex-col gap-3">
+            <div className="pt-4 flex flex-col gap-3 fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
               <Button 
                 variant="outline" 
                 fullWidth 
+                size="sm"
                 icon={<User className="w-4 h-4" />}
                 onClick={() => window.location.href = '/login'}
+                className="h-10"
               >
                 Login
               </Button>
               <Button 
                 variant="primary" 
                 fullWidth
+                size="sm"
                 onClick={() => window.location.href = '/login?signup=true'}
+                className="h-10"
               >
                 Register
               </Button>

@@ -56,13 +56,14 @@ const SearchWidget = memo(() => {
     setToStation(temp);
   };
 
-  const handleSearch = () => {
-    navigate('/book-train');
+  const handleSearch = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default button behavior
+    navigate('/train-list'); // Navigate to train-list instead of book-train
   };
 
   const handleMouseEnterSearch = () => {
-    // Prefetch the next page when hovering over the search button
-    prefetchRoute('/book-train');
+    // Prefetch both possible routes the user might navigate to
+    prefetchRoute('/train-list');
   };
 
   return (
@@ -111,7 +112,7 @@ const SearchWidget = memo(() => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <PrefetchLink to="/book-train">
+            <PrefetchLink to="/train-list">
               <Button 
                 variant="accent" 
                 size="lg" 
