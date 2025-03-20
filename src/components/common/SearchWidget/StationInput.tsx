@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Station {
   code: string;
@@ -26,6 +27,7 @@ const StationInput: React.FC<StationInputProps> = ({
   stations
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <div className="relative">
@@ -53,13 +55,17 @@ const StationInput: React.FC<StationInputProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute z-50 mt-1 w-full md:w-[300px] lg:w-[350px] bg-white rounded-lg shadow-xl border border-gray-300 max-h-[75vh] md:max-h-[350px] overflow-hidden"
+              className={`absolute z-50 mt-1 ${isMobile ? 'w-[calc(100vw-3rem)] max-h-[40vh] left-1/2 -translate-x-1/2' : 'w-full md:w-[300px] lg:w-[350px] max-h-[75vh] md:max-h-[350px]'} bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden`}
+              style={{
+                position: 'absolute',
+                zIndex: 100,
+              }}
             >
               <div className="p-4">
                 <div className="text-sm font-semibold text-gray-800 px-3 py-2 bg-gray-100 rounded mb-3">
                   Popular Stations
                 </div>
-                <div className="max-h-[300px] overflow-y-auto py-2">
+                <div className={`overflow-y-auto py-2 ${isMobile ? 'max-h-[30vh]' : 'max-h-[300px]'}`}>
                   {stations.map((station) => (
                     <motion.div
                       key={station.code}
