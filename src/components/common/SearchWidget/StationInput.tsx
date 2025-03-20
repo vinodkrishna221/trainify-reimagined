@@ -1,15 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MapPin, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface Station {
   code: string;
@@ -35,58 +28,66 @@ const StationInput: React.FC<StationInputProps> = ({
 }) => {
   const [focused, setFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Custom input that triggers the dropdown
-  const CustomInput = () => (
-    <div className="relative">
-      <input
-        type="text"
-        value={value}
-        onChange={onChange}
-        onFocus={() => {
-          setFocused(true);
-          setShowSuggestions(true);
-        }}
-        onBlur={() => {
-          setFocused(false);
-          // Delay hiding suggestions to allow for clicks
-          setTimeout(() => setShowSuggestions(false), 200);
-        }}
-        placeholder={placeholder}
-        className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-irctc-royal-blue/20 focus:border-irctc-royal-blue transition-all"
-        aria-label={label}
-      />
-      <MapPin 
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-irctc-medium-gray" 
-        aria-hidden="true"
-      />
-    </div>
-  );
+  useEffect(() => {
+    // Close suggestions when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current && 
+        !inputRef.current.contains(event.target as Node) &&
+        dropdownRef.current && 
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative">
       <label className="block text-sm font-medium text-irctc-medium-gray mb-1.5">{label}</label>
       
-      {/* Custom input */}
-      <CustomInput />
+      <div className="relative">
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={onChange}
+          onFocus={() => {
+            setFocused(true);
+            setShowSuggestions(true);
+          }}
+          placeholder={placeholder}
+          className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-irctc-royal-blue/20 focus:border-irctc-royal-blue transition-all"
+          aria-label={label}
+        />
+        <MapPin 
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-irctc-medium-gray" 
+          aria-hidden="true"
+        />
+      </div>
       
       {/* Station suggestions dropdown */}
       <AnimatePresence>
         {showSuggestions && (
           <motion.div
+            ref={dropdownRef}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
             transition={{ duration: 0.15 }}
             className={`
               absolute left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50
-              ${isMobile ? 'max-h-[60vh]' : 'max-h-[350px]'}
+              ${isMobile ? 'max-h-60' : 'max-h-[350px]'}
             `}
-            style={{
-              width: '100%',
-              minWidth: isMobile ? 'calc(100vw - 2rem)' : '350px',
-            }}
           >
             <div className="p-3">
               <div className="text-sm font-semibold bg-gray-50 text-gray-800 px-3 py-2 rounded mb-2">
@@ -98,7 +99,10 @@ const StationInput: React.FC<StationInputProps> = ({
                     key={station.code}
                     whileHover={{ backgroundColor: "#f3f4f6" }}
                     className="px-4 py-3 rounded-md cursor-pointer hover:bg-gray-100 flex items-start justify-between"
-                    onClick={() => onSelect(station)}
+                    onClick={() => {
+                      onSelect(station);
+                      setShowSuggestions(false);
+                    }}
                     role="option"
                     aria-selected={value === `${station.name} (${station.code})`}
                   >

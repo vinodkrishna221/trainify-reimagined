@@ -1,6 +1,6 @@
 
 import React, { useState, memo, useEffect } from 'react';
-import { Calendar, MapPin, Train, ArrowRight, CalendarDays } from 'lucide-react';
+import { Train, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -82,7 +82,7 @@ const SearchWidget = memo(() => {
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
       transition={{ duration: 0.5 }}
       className={cn(
-        "w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100",
+        "w-full max-w-4xl bg-white rounded-xl shadow-lg border border-gray-100",
         "overflow-visible relative z-10" // Added to ensure dropdown visibility
       )}
     >
@@ -90,7 +90,7 @@ const SearchWidget = memo(() => {
         <h3 className="text-xl font-semibold text-irctc-dark-gray mb-5">Book Your Train Ticket</h3>
         
         <div className={cn(
-          "grid gap-6 mb-6",
+          "grid gap-5",
           isMobile ? "grid-cols-1" : "grid-cols-7"
         )}>
           {/* From Station */}

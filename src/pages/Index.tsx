@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Clock, MapPin, Train, Ticket, Bell, BarChart4, Users, Star } from 'lucide-react';
@@ -8,7 +7,6 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import StatusIndicator from '@/components/common/StatusIndicator';
 
-// Helper function to animate elements when they enter the viewport
 const useAnimateOnScroll = () => {
   const animationRefs = useRef<(HTMLElement | null)[]>([]);
   
@@ -93,8 +91,12 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto px-4 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="max-w-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+            <div className="lg:col-span-5 lg:ml-0 ml-auto mr-auto">
+              <SearchWidget />
+            </div>
+            
+            <div className="lg:col-span-7">
               <span className="inline-block mb-3 px-3 py-1 bg-irctc-royal-blue/10 text-irctc-royal-blue text-sm font-medium rounded-full">
                 India's #1 Rail Booking Platform
               </span>
@@ -112,10 +114,6 @@ const Index = () => {
                   Learn More
                 </Button>
               </div>
-            </div>
-            
-            <div className="lg:max-w-lg mx-auto w-full">
-              <SearchWidget />
             </div>
           </div>
         </div>
