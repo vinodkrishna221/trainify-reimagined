@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Clock, MapPin, Train, Ticket, Bell, BarChart4, Users, Star } from 'lucide-react';
@@ -92,8 +93,10 @@ const Index = () => {
         
         <div className="container mx-auto px-4 z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            <div className="lg:col-span-5 lg:ml-0 ml-auto mr-auto">
-              <SearchWidget />
+            <div className="lg:col-span-5 ml-0 mr-auto">
+              <div className="w-full max-w-md lg:max-w-full">
+                <SearchWidget />
+              </div>
             </div>
             
             <div className="lg:col-span-7">
