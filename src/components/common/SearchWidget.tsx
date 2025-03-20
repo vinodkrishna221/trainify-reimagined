@@ -82,14 +82,15 @@ const SearchWidget = memo(() => {
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
       transition={{ duration: 0.5 }}
       className={cn(
-        "w-full max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-100",
+        "w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100",
+        "backdrop-blur-sm"
       )}
     >
       <div className="p-5 md:p-8">
         <h3 className="text-xl font-semibold text-irctc-dark-gray mb-6">Book Your Train Ticket</h3>
         
         <div className={cn(
-          "grid gap-4 mb-8",
+          "grid gap-6 mb-8",
           isMobile ? "grid-cols-1" : "grid-cols-7"
         )}>
           {/* From Station */}
@@ -130,14 +131,14 @@ const SearchWidget = memo(() => {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-6">
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
             <PrefetchLink to="/train-list">
               <Button 
-                variant="default" 
+                variant="accent" 
                 size="lg" 
                 className="w-full sm:w-auto min-w-[150px] bg-orange-500 hover:bg-orange-600 flex items-center gap-2"
                 onClick={handleSearch}

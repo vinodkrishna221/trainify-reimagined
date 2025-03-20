@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -28,11 +28,39 @@ const StationInput: React.FC<StationInputProps> = ({
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isMobile = useIsMobile();
+  const inputRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+
+  useEffect(() => {
+    function updatePosition() {
+      if (inputRef.current && showSuggestions) {
+        const rect = inputRef.current.getBoundingClientRect();
+        
+        if (isMobile) {
+          setDropdownPosition({
+            top: rect.bottom + window.scrollY,
+            left: rect.left,
+            width: Math.min(window.innerWidth - 32, 350)
+          });
+        } else {
+          setDropdownPosition({
+            top: rect.bottom + window.scrollY,
+            left: rect.left,
+            width: Math.max(rect.width, 350)
+          });
+        }
+      }
+    }
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    return () => window.removeEventListener('resize', updatePosition);
+  }, [showSuggestions, isMobile]);
 
   return (
     <div className="relative">
       <label className="block text-sm font-medium text-irctc-medium-gray mb-1.5">{label}</label>
-      <div className="relative">
+      <div className="relative" ref={inputRef}>
         <input
           type="text"
           value={value}
@@ -55,17 +83,20 @@ const StationInput: React.FC<StationInputProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className={`absolute z-50 mt-1 ${isMobile ? 'w-[calc(100vw-3rem)] max-h-[40vh] left-1/2 -translate-x-1/2' : 'w-full md:w-[300px] lg:w-[350px] max-h-[75vh] md:max-h-[350px]'} bg-white rounded-lg shadow-xl border border-gray-300 overflow-hidden`}
+              className="fixed z-50 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden"
               style={{
-                position: 'absolute',
-                zIndex: 100,
+                top: `${dropdownPosition.top}px`, 
+                left: isMobile ? '50%' : `${dropdownPosition.left}px`,
+                width: isMobile ? `${dropdownPosition.width}px` : `${dropdownPosition.width}px`,
+                maxHeight: isMobile ? '40vh' : '75vh',
+                transform: isMobile ? 'translateX(-50%)' : 'none'
               }}
             >
               <div className="p-4">
                 <div className="text-sm font-semibold text-gray-800 px-3 py-2 bg-gray-100 rounded mb-3">
                   Popular Stations
                 </div>
-                <div className={`overflow-y-auto py-2 ${isMobile ? 'max-h-[30vh]' : 'max-h-[300px]'}`}>
+                <div className={`overflow-y-auto ${isMobile ? 'max-h-[30vh]' : 'max-h-[300px]'}`}>
                   {stations.map((station) => (
                     <motion.div
                       key={station.code}
