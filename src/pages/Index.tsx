@@ -92,7 +92,7 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto px-4 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
             <div className="lg:col-span-5 ml-0 mr-auto">
               <div className="w-full max-w-md lg:max-w-full">
                 <SearchWidget />
