@@ -1,8 +1,15 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Station {
   code: string;
@@ -26,96 +33,89 @@ const StationInput: React.FC<StationInputProps> = ({
   placeholder = "Enter city or station",
   stations
 }) => {
+  const [focused, setFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const isMobile = useIsMobile();
-  const inputRef = useRef<HTMLDivElement>(null);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 
-  useEffect(() => {
-    function updatePosition() {
-      if (inputRef.current && showSuggestions) {
-        const rect = inputRef.current.getBoundingClientRect();
-        
-        if (isMobile) {
-          setDropdownPosition({
-            top: rect.bottom + window.scrollY,
-            left: rect.left,
-            width: Math.min(window.innerWidth - 32, 350)
-          });
-        } else {
-          setDropdownPosition({
-            top: rect.bottom + window.scrollY,
-            left: rect.left,
-            width: Math.max(rect.width, 350)
-          });
-        }
-      }
-    }
-
-    updatePosition();
-    window.addEventListener('resize', updatePosition);
-    return () => window.removeEventListener('resize', updatePosition);
-  }, [showSuggestions, isMobile]);
+  // Custom input that triggers the dropdown
+  const CustomInput = () => (
+    <div className="relative">
+      <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        onFocus={() => {
+          setFocused(true);
+          setShowSuggestions(true);
+        }}
+        onBlur={() => {
+          setFocused(false);
+          // Delay hiding suggestions to allow for clicks
+          setTimeout(() => setShowSuggestions(false), 200);
+        }}
+        placeholder={placeholder}
+        className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-irctc-royal-blue/20 focus:border-irctc-royal-blue transition-all"
+        aria-label={label}
+      />
+      <MapPin 
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-irctc-medium-gray" 
+        aria-hidden="true"
+      />
+    </div>
+  );
 
   return (
     <div className="relative">
       <label className="block text-sm font-medium text-irctc-medium-gray mb-1.5">{label}</label>
-      <div className="relative" ref={inputRef}>
-        <input
-          type="text"
-          value={value}
-          onChange={onChange}
-          onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-          placeholder={placeholder}
-          className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-irctc-royal-blue/20 focus:border-irctc-royal-blue transition-all"
-          aria-label={label}
-        />
-        <MapPin 
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-irctc-medium-gray" 
-          aria-hidden="true"
-        />
-        
-        <AnimatePresence>
-          {showSuggestions && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="fixed z-50 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden"
-              style={{
-                top: `${dropdownPosition.top}px`, 
-                left: isMobile ? '50%' : `${dropdownPosition.left}px`,
-                width: isMobile ? `${dropdownPosition.width}px` : `${dropdownPosition.width}px`,
-                maxHeight: isMobile ? '40vh' : '75vh',
-                transform: isMobile ? 'translateX(-50%)' : 'none'
-              }}
-            >
-              <div className="p-4">
-                <div className="text-sm font-semibold text-gray-800 px-3 py-2 bg-gray-100 rounded mb-3">
-                  Popular Stations
-                </div>
-                <div className={`overflow-y-auto ${isMobile ? 'max-h-[30vh]' : 'max-h-[300px]'}`}>
-                  {stations.map((station) => (
-                    <motion.div
-                      key={station.code}
-                      whileHover={{ backgroundColor: "#f3f4f6" }}
-                      className="px-4 py-3.5 rounded-md cursor-pointer transition-colors hover:bg-gray-100 my-2"
-                      onClick={() => onSelect(station)}
-                      role="option"
-                      aria-selected={value === `${station.name} (${station.code})`}
-                    >
-                      <div className="font-medium text-gray-900 text-base">{station.name}</div>
-                      <div className="text-sm text-gray-600 mt-1">{station.code}</div>
-                    </motion.div>
-                  ))}
-                </div>
+      
+      {/* Custom input */}
+      <CustomInput />
+      
+      {/* Station suggestions dropdown */}
+      <AnimatePresence>
+        {showSuggestions && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 5 }}
+            transition={{ duration: 0.15 }}
+            className={`
+              absolute left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50
+              ${isMobile ? 'max-h-[60vh]' : 'max-h-[350px]'}
+            `}
+            style={{
+              width: '100%',
+              minWidth: isMobile ? 'calc(100vw - 2rem)' : '350px',
+            }}
+          >
+            <div className="p-3">
+              <div className="text-sm font-semibold bg-gray-50 text-gray-800 px-3 py-2 rounded mb-2">
+                Popular Stations
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              <div className={`overflow-y-auto ${isMobile ? 'max-h-[40vh]' : 'max-h-[300px]'}`}>
+                {stations.map((station) => (
+                  <motion.div
+                    key={station.code}
+                    whileHover={{ backgroundColor: "#f3f4f6" }}
+                    className="px-4 py-3 rounded-md cursor-pointer hover:bg-gray-100 flex items-start justify-between"
+                    onClick={() => onSelect(station)}
+                    role="option"
+                    aria-selected={value === `${station.name} (${station.code})`}
+                  >
+                    <div>
+                      <div className="font-medium text-gray-900">{station.name}</div>
+                      <div className="text-sm text-gray-600 mt-0.5">{station.code}</div>
+                    </div>
+                    {value === `${station.name} (${station.code})` && (
+                      <Check className="h-4 w-4 text-green-500 mt-1" />
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

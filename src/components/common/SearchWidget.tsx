@@ -83,14 +83,14 @@ const SearchWidget = memo(() => {
       transition={{ duration: 0.5 }}
       className={cn(
         "w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100",
-        "backdrop-blur-sm"
+        "overflow-visible relative z-10" // Added to ensure dropdown visibility
       )}
     >
-      <div className="p-5 md:p-8">
-        <h3 className="text-xl font-semibold text-irctc-dark-gray mb-6">Book Your Train Ticket</h3>
+      <div className="p-5 md:p-6 lg:p-8">
+        <h3 className="text-xl font-semibold text-irctc-dark-gray mb-5">Book Your Train Ticket</h3>
         
         <div className={cn(
-          "grid gap-6 mb-8",
+          "grid gap-6 mb-6",
           isMobile ? "grid-cols-1" : "grid-cols-7"
         )}>
           {/* From Station */}
