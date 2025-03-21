@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useState, useCallback } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -25,6 +24,11 @@ const TrainSchedule = lazy(() => import(/* webpackChunkName: "train-schedule" */
 const CancelTicket = lazy(() => import(/* webpackChunkName: "cancel-ticket" */ "./pages/CancelTicket"));
 const PNRStatus = lazy(() => import(/* webpackChunkName: "pnr-status" */ "./pages/PNRStatus"));
 const FareAlert = lazy(() => import(/* webpackChunkName: "fare-alert" */ "./pages/FareAlert"));
+const HolidayPackages = lazy(() => import(/* webpackChunkName: "holiday-packages" */ "./pages/HolidayPackages"));
+const Flights = lazy(() => import(/* webpackChunkName: "flights" */ "./pages/Flights"));
+const Hotels = lazy(() => import(/* webpackChunkName: "hotels" */ "./pages/Hotels"));
+const Help = lazy(() => import(/* webpackChunkName: "help" */ "./pages/Help"));
+const Dashboard = lazy(() => import(/* webpackChunkName: "dashboard" */ "./pages/Dashboard"));
 const NotFound = lazy(() => import(/* webpackChunkName: "not-found" */ "./pages/NotFound"));
 
 // Component map for prefetching
@@ -38,6 +42,11 @@ const componentMap: Record<string, () => Promise<any>> = {
   "/cancel-ticket": () => import(/* webpackChunkName: "cancel-ticket" */ "./pages/CancelTicket"),
   "/pnr-status": () => import(/* webpackChunkName: "pnr-status" */ "./pages/PNRStatus"),
   "/fare-alert": () => import(/* webpackChunkName: "fare-alert" */ "./pages/FareAlert"),
+  "/holiday-packages": () => import(/* webpackChunkName: "holiday-packages" */ "./pages/HolidayPackages"),
+  "/flights": () => import(/* webpackChunkName: "flights" */ "./pages/Flights"),
+  "/hotels": () => import(/* webpackChunkName: "hotels" */ "./pages/Hotels"),
+  "/help": () => import(/* webpackChunkName: "help" */ "./pages/Help"),
+  "/dashboard": () => import(/* webpackChunkName: "dashboard" */ "./pages/Dashboard"),
 };
 
 // Prefetch provider component
@@ -111,6 +120,11 @@ const App = () => (
                 <Route path="/cancel-ticket" element={<CancelTicket />} />
                 <Route path="/pnr-status" element={<PNRStatus />} />
                 <Route path="/fare-alert" element={<FareAlert />} />
+                <Route path="/holiday-packages" element={<HolidayPackages />} />
+                <Route path="/flights" element={<Flights />} />
+                <Route path="/hotels" element={<Hotels />} />
+                <Route path="/help" element={<Help />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

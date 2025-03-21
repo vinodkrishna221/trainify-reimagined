@@ -30,21 +30,19 @@ const StationInput: React.FC<StationInputProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    // Close suggestions when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        inputRef.current && 
-        !inputRef.current.contains(event.target as Node) &&
-        dropdownRef.current && 
-        !dropdownRef.current.contains(event.target as Node)
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
       ) {
         setShowSuggestions(false);
       }
     };
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -52,7 +50,7 @@ const StationInput: React.FC<StationInputProps> = ({
   }, []);
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <label className="block text-sm font-medium text-irctc-medium-gray mb-1.5">{label}</label>
       
       <div className="relative">
@@ -75,7 +73,7 @@ const StationInput: React.FC<StationInputProps> = ({
         />
       </div>
       
-      {/* Station suggestions dropdown */}
+      {/* Suggestions dropdown with fixed positioning */}
       <AnimatePresence>
         {showSuggestions && (
           <motion.div
@@ -84,10 +82,13 @@ const StationInput: React.FC<StationInputProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
             transition={{ duration: 0.15 }}
-            className={`
-              absolute left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50
-              ${isMobile ? 'max-h-60' : 'max-h-[350px]'}
-            `}
+            style={{
+              position: 'absolute',
+              width: '100%',
+              zIndex: 50,
+              marginTop: '4px'
+            }}
+            className="bg-white rounded-lg shadow-lg border border-gray-200"
           >
             <div className="p-3">
               <div className="text-sm font-semibold bg-gray-50 text-gray-800 px-3 py-2 rounded mb-2">
