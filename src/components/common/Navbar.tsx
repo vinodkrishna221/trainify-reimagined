@@ -188,7 +188,7 @@ const Navbar = () => {
                 Login
               </Button>
               <Button 
-                variant="default" 
+                variant="primary" 
                 size="sm"
                 onClick={() => navigate('/login?signup=true')}
               >
@@ -307,7 +307,7 @@ const Navbar = () => {
                         Login
                       </Button>
                       <Button 
-                        variant="default" 
+                        variant="primary" 
                         fullWidth
                         onClick={() => navigate('/login?signup=true')}
                       >
