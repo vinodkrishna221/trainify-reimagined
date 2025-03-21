@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Building, Calendar, Users, Search, MapPin, Star, Wifi, Coffee, Tv } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { Building, Calendar, Users, Search, Star, Wifi, CreditCard, Coffee, 
+         MapPin, Filter, ArrowRight, ArrowUpDown } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
+import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const Hotels = () => {
   const popularHotels = [
@@ -95,11 +100,11 @@ const Hotels = () => {
   const renderAmenityIcon = (amenity: string) => {
     switch (amenity) {
       case 'wifi':
-        return <Wifi className="h-4 w-4" aria-label="Free WiFi" />;
+        return <Wifi className="text-green-500" aria-label="Free WiFi" />;
       case 'breakfast':
-        return <Coffee className="h-4 w-4" aria-label="Breakfast Included" />;
+        return <Coffee className="text-amber-500" aria-label="Breakfast Included" />;
       case 'parking':
-        return <Building className="h-4 w-4" aria-label="Free Parking" />;
+        return <Building className="text-blue-500" aria-label="Free Parking" />;
       case 'tv':
         return <Tv className="h-4 w-4" aria-label="Flat-screen TV" />;
       default:
@@ -508,4 +513,3 @@ const Hotels = () => {
 };
 
 export default Hotels;
-

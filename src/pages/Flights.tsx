@@ -1,486 +1,272 @@
-
 import React, { useState } from 'react';
-import { Plane, Calendar, Users, ArrowRight, Search, Filter, Clock, Wifi, Coffee, Bookmark, BadgePercent, Clock3, Users2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { Plane, Calendar, Users, ArrowRight, Filter, TrendingUp, RotateCcw, 
+         Bookmark, ChevronsUpDown, Clock, AlertCircle } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import StatusIndicator from '@/components/common/StatusIndicator';
 
-const Flights = () => {
-  const [tripType, setTripType] = useState('roundtrip');
-  
-  const flights = [
-    {
-      id: '1',
-      airline: 'IndiGo',
-      logo: 'https://images.unsplash.com/photo-1649615489989-bee9630a1cea?ixlib=rb-4.0.3&q=85&w=64&h=64&crop=center',
-      flightNumber: '6E-2135',
-      departure: '10:25',
-      arrival: '12:35',
-      origin: 'Delhi (DEL)',
-      destination: 'Mumbai (BOM)',
-      duration: '2h 10m',
-      price: '₹4,230',
-      isRefundable: true,
-      amenities: ['meal', 'wifi', 'entertainment'],
-      stops: 'Non-stop',
-    },
-    {
-      id: '2',
-      airline: 'Air India',
-      logo: 'https://images.unsplash.com/photo-1649615489989-bee9630a1cea?ixlib=rb-4.0.3&q=85&w=64&h=64&crop=center',
-      flightNumber: 'AI-864',
-      departure: '08:10',
-      arrival: '10:35',
-      origin: 'Delhi (DEL)',
-      destination: 'Mumbai (BOM)',
-      duration: '2h 25m',
-      price: '₹5,120',
-      isRefundable: true,
-      amenities: ['meal', 'wifi', 'entertainment', 'usb'],
-      stops: 'Non-stop',
-    },
-    {
-      id: '3',
-      airline: 'Vistara',
-      logo: 'https://images.unsplash.com/photo-1649615489989-bee9630a1cea?ixlib=rb-4.0.3&q=85&w=64&h=64&crop=center',
-      flightNumber: 'UK-945',
-      departure: '16:45',
-      arrival: '19:05',
-      origin: 'Delhi (DEL)',
-      destination: 'Mumbai (BOM)',
-      duration: '2h 20m',
-      price: '₹4,750',
-      isRefundable: true,
-      amenities: ['meal', 'wifi', 'entertainment', 'usb'],
-      stops: 'Non-stop',
-    },
-    {
-      id: '4',
-      airline: 'SpiceJet',
-      logo: 'https://images.unsplash.com/photo-1649615489989-bee9630a1cea?ixlib=rb-4.0.3&q=85&w=64&h=64&crop=center',
-      flightNumber: 'SG-8169',
-      departure: '12:00',
-      arrival: '14:15',
-      origin: 'Delhi (DEL)',
-      destination: 'Mumbai (BOM)',
-      duration: '2h 15m',
-      price: '₹3,850',
-      isRefundable: false,
-      amenities: ['meal'],
-      stops: 'Non-stop',
-    },
-    {
-      id: '5',
-      airline: 'GoAir',
-      logo: 'https://images.unsplash.com/photo-1649615489989-bee9630a1cea?ixlib=rb-4.0.3&q=85&w=64&h=64&crop=center',
-      flightNumber: 'G8-339',
-      departure: '07:05',
-      arrival: '09:25',
-      origin: 'Delhi (DEL)',
-      destination: 'Mumbai (BOM)',
-      duration: '2h 20m',
-      price: '₹3,620',
-      isRefundable: false,
-      amenities: [],
-      stops: 'Non-stop',
-    },
-  ];
+interface Flight {
+  id: number;
+  airline: string;
+  departure: string;
+  arrival: string;
+  duration: string;
+  price: number;
+  stops: number;
+  status: 'on-time' | 'delayed' | 'cancelled';
+}
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+const initialFlights: Flight[] = [
+  {
+    id: 1,
+    airline: 'IRCTC Airways',
+    departure: '06:00 DEL',
+    arrival: '09:00 BOM',
+    duration: '3h 0m',
+    price: 4500,
+    stops: 0,
+    status: 'on-time',
+  },
+  {
+    id: 2,
+    airline: 'Spice Express',
+    departure: '07:30 DEL',
+    arrival: '10:30 BOM',
+    duration: '3h 0m',
+    price: 5200,
+    stops: 0,
+    status: 'on-time',
+  },
+  {
+    id: 3,
+    airline: 'Air India',
+    departure: '09:00 DEL',
+    arrival: '12:30 BOM',
+    duration: '3h 30m',
+    price: 6000,
+    stops: 1,
+    status: 'delayed',
+  },
+  {
+    id: 4,
+    airline: 'Indigo',
+    departure: '11:00 DEL',
+    arrival: '14:00 BOM',
+    duration: '3h 0m',
+    price: 4800,
+    stops: 0,
+    status: 'on-time',
+  },
+  {
+    id: 5,
+    airline: 'Vistara',
+    departure: '13:00 DEL',
+    arrival: '16:30 BOM',
+    duration: '3h 30m',
+    price: 5500,
+    stops: 1,
+    status: 'on-time',
+  },
+];
+
+const Flights = () => {
+  const navigate = useNavigate();
+  const [flights, setFlights] = useState(initialFlights);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortBy, setSortBy] = useState<'price' | 'duration'>('price');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const handleSearch = () => {
+    navigate('/book-train');
   };
 
-  const itemVariants = {
-    hidden: { y: 10, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.4 }
-    }
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
+  const sortFlights = (criteria: 'price' | 'duration') => {
+    setSortBy(criteria);
+    const sortedFlights = [...flights].sort((a, b) => {
+      const order = sortOrder === 'asc' ? 1 : -1;
+      if (criteria === 'price') {
+        return order * (a.price - b.price);
+      } else {
+        // Simple duration comparison (assuming format is always 'Xh Ym')
+        const durationA = parseInt(a.duration.split('h')[0]) * 60 + parseInt(a.duration.split('h')[1].split('m')[0]);
+        const durationB = parseInt(b.duration.split('h')[0]) * 60 + parseInt(b.duration.split('h')[1].split('m')[0]);
+        return order * (durationA - durationB);
+      }
+    });
+    setFlights(sortedFlights);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-20">
+      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Find and Book the Perfect Flight</h1>
-            <p className="text-xl text-white/90 mb-8 text-center">
-              Discover affordable flights to hundreds of destinations across India
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Book Your Flight Tickets</h1>
+            <p className="text-xl text-white/90 mb-8">
+              Find the best deals on domestic and international flights
             </p>
-            
-            <Card className="bg-white rounded-xl p-6 shadow-lg">
-              <Tabs defaultValue="roundtrip" className="w-full" onValueChange={setTripType}>
-                <TabsList className="mb-6 w-full bg-gray-100 p-1">
-                  <TabsTrigger value="roundtrip" className="flex-1">Round Trip</TabsTrigger>
-                  <TabsTrigger value="oneway" className="flex-1">One Way</TabsTrigger>
-                  <TabsTrigger value="multicity" className="flex-1">Multi-City</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="roundtrip" className="mt-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="From City or Airport"
-                          defaultValue="New Delhi (DEL)"
-                        />
-                        <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="To City or Airport"
-                          defaultValue="Mumbai (BOM)"
-                        />
-                        <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Departure - Return</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="Select Dates"
-                          defaultValue="Jul 15 - Jul 22"
-                        />
-                        <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Travelers & Class</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="Passengers & Class"
-                          defaultValue="1 Adult, Economy"
-                        />
-                        <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 flex justify-center">
-                    <Button 
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-6 h-auto text-lg font-medium"
-                    >
-                      <Search className="mr-2 w-5 h-5" /> Search Flights
-                    </Button>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="oneway" className="mt-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="From City or Airport"
-                        />
-                        <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="To City or Airport"
-                        />
-                        <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Departure</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="Select Date"
-                        />
-                        <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Travelers & Class</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="Passengers & Class"
-                        />
-                        <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 flex justify-center">
-                    <Button 
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-6 h-auto text-lg font-medium"
-                    >
-                      <Search className="mr-2 w-5 h-5" /> Search Flights
-                    </Button>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="multicity" className="mt-0">
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">From</label>
-                        <div className="relative">
-                          <input 
-                            type="text" 
-                            className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                            placeholder="From City or Airport"
-                          />
-                          <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">To</label>
-                        <div className="relative">
-                          <input 
-                            type="text" 
-                            className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                            placeholder="To City or Airport"
-                          />
-                          <Plane className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Departure</label>
-                        <div className="relative">
-                          <input 
-                            type="text" 
-                            className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                            placeholder="Select Date"
-                          />
-                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-end">
-                        <Button variant="outline" className="w-full">+ Add City</Button>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Travelers & Class</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          className="w-full pl-10 py-3 border border-gray-200 rounded-lg" 
-                          placeholder="Passengers & Class"
-                        />
-                        <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 flex justify-center">
-                    <Button 
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-6 h-auto text-lg font-medium"
-                    >
-                      <Search className="mr-2 w-5 h-5" /> Search Flights
-                    </Button>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </Card>
+            <Button variant="accent" size="lg" className="font-medium" onClick={handleSearch}>
+              <Plane className="w-5 h-5 mr-2" />
+              Search Flights
+            </Button>
           </div>
         </div>
-        
-        {/* Background particle effect */}
-        <div id="tsparticles" className="absolute inset-0 z-0"></div>
       </section>
-      
-      {/* Available Flights */}
-      <section className="py-16 bg-gray-50">
+
+      {/* Search and Filter Section */}
+      <section className="bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-8">
+          <Card className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6">
+            {/* From Location */}
             <div>
-              <h2 className="text-3xl font-bold mb-2">Available Flights</h2>
-              <p className="text-irctc-medium-gray">Delhi to Mumbai • July 15</p>
+              <Label htmlFor="from">From</Label>
+              <Input type="text" id="from" placeholder="Enter city or airport" />
             </div>
-            
-            <Button variant="outline" className="mt-4 md:mt-0">
-              <Filter className="mr-2 w-4 h-4" /> Filter
-            </Button>
-          </div>
-          
-          <motion.div 
-            className="space-y-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {flights.map((flight) => (
-              <motion.div key={flight.id} variants={itemVariants}>
-                <Card className="p-6">
-                  <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6">
-                    <div className="flex items-center">
-                      <div className="mr-4">
-                        <img 
-                          src={flight.logo} 
-                          alt={flight.airline} 
-                          className="w-12 h-12 rounded-full"
-                        />
-                      </div>
-                      <div>
-                        <div className="font-semibold text-lg">{flight.airline}</div>
-                        <div className="text-sm text-irctc-medium-gray">{flight.flightNumber}</div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-1 flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold">{flight.departure}</div>
-                        <div className="text-sm text-irctc-medium-gray">{flight.origin}</div>
-                      </div>
-                      
-                      <div className="flex flex-col items-center px-4">
-                        <div className="text-xs text-irctc-medium-gray mb-1">{flight.duration}</div>
-                        <div className="relative w-32 h-px bg-gray-300">
-                          <div className="absolute -top-1.5 left-0 w-2 h-2 rounded-full bg-irctc-royal-blue"></div>
-                          <div className="absolute -top-1.5 right-0 w-2 h-2 rounded-full bg-irctc-royal-blue"></div>
-                        </div>
-                        <div className="text-xs text-irctc-medium-gray mt-1">{flight.stops}</div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <div className="text-2xl font-bold">{flight.arrival}</div>
-                        <div className="text-sm text-irctc-medium-gray">{flight.destination}</div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col items-center lg:items-end">
-                      <div className="flex items-center gap-2 mb-2">
-                        {flight.amenities.includes('wifi') && (
-                          <div className="text-gray-500 tooltip" title="WiFi Available">
-                            <Wifi className="w-4 h-4" />
-                          </div>
-                        )}
-                        {flight.amenities.includes('meal') && (
-                          <div className="text-gray-500 tooltip" title="Meals Included">
-                            <Coffee className="w-4 h-4" />
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="text-2xl font-bold text-irctc-royal-blue mb-1">{flight.price}</div>
-                      <StatusIndicator type={flight.isRefundable ? "success" : "warning"} showDot>
-                        {flight.isRefundable ? "Refundable" : "Non-Refundable"}
-                      </StatusIndicator>
-                      
-                      <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
-                        Book Now
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
+
+            {/* To Location */}
+            <div>
+              <Label htmlFor="to">To</Label>
+              <Input type="text" id="to" placeholder="Enter city or airport" />
+            </div>
+
+            {/* Departure Date */}
+            <div>
+              <Label htmlFor="departureDate">Departure Date</Label>
+              <Input type="date" id="departureDate" />
+            </div>
+
+            {/* Passengers */}
+            <div>
+              <Label htmlFor="passengers">Passengers</Label>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="1 Passenger" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <SelectItem key={num} value={`${num} Passenger`}>
+                      {num} Passenger{num > 1 ? 's' : ''}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </Card>
         </div>
       </section>
-      
-      {/* Why Book With Us */}
-      <section className="py-16 bg-white">
+
+      {/* Flight Listings */}
+      <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Book Flights With Us?</h2>
-            <p className="text-irctc-medium-gray max-w-3xl mx-auto">
-              We make booking flights easy and affordable with special benefits for IRCTC users
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bookmark className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">No Hidden Charges</h3>
-              <p className="text-irctc-medium-gray">Transparent pricing with no surprise fees</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Easy Rescheduling</h3>
-              <p className="text-irctc-medium-gray">Change your flight with minimal fees</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-              <p className="text-irctc-medium-gray">Round-the-clock customer assistance</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Plane className="w-8 h-8 text-amber-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Combo Discounts</h3>
-              <p className="text-irctc-medium-gray">Special offers when booking with train tickets</p>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Available Flights</h2>
+            <div className="space-x-2">
+              <Button variant="outline" onClick={() => sortFlights('price')}>
+                Price <ChevronsUpDown className="ml-2 h-4 w-4" />
+              </Button>
+              <Button variant="outline" onClick={() => sortFlights('duration')}>
+                Duration <ChevronsUpDown className="ml-2 h-4 w-4" />
+              </Button>
+              <Button variant="secondary" onClick={toggleFilter}>
+                <Filter className="mr-2 h-4 w-4" /> Filter
+              </Button>
             </div>
           </div>
+
+          {/* Filter Options (Conditionally Rendered) */}
+          {isFilterOpen && (
+            <Card className="mb-6 p-4">
+              <h3 className="text-lg font-semibold mb-3">Filter Options</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="block mb-2">Airline</Label>
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any Airline" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {['IRCTC Airways', 'Spice Express', 'Air India', 'Indigo', 'Vistara'].map((airline) => (
+                        <SelectItem key={airline} value={airline}>
+                          {airline}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="block mb-2">Stops</Label>
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any Stops" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {['Non-Stop', '1 Stop', '2+ Stops'].map((stopOption, index) => (
+                        <SelectItem key={index} value={stopOption}>
+                          {stopOption}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {/* Flight List */}
+          {flights.map((flight) => (
+            <Card key={flight.id} className="mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+                {/* Airline and Flight Details */}
+                <div className="md:col-span-1">
+                  <div className="text-lg font-semibold text-gray-700">{flight.airline}</div>
+                  <div className="text-sm text-gray-500">
+                    {flight.departure.split(' ')[1]} - {flight.arrival.split(' ')[1]}
+                  </div>
+                </div>
+
+                {/* Departure and Arrival Times */}
+                <div className="md:col-span-1">
+                  <div className="text-xl font-semibold text-gray-800">{flight.departure.split(' ')[0]}</div>
+                  <div className="text-sm text-gray-500">Departure</div>
+                </div>
+                <div className="md:col-span-1">
+                  <div className="text-xl font-semibold text-gray-800">{flight.arrival.split(' ')[0]}</div>
+                  <div className="text-sm text-gray-500">Arrival</div>
+                </div>
+
+                {/* Duration and Stops */}
+                <div className="md:col-span-1 flex flex-col items-end">
+                  <div className="text-md font-medium text-gray-700">{flight.duration}</div>
+                  <div className="text-sm text-gray-500">{flight.stops} Stop{flight.stops !== 1 ? 's' : ''}</div>
+                  <div className="text-lg font-semibold text-blue-600">₹{flight.price}</div>
+                  <Button variant="primary" size="sm">Book Now</Button>
+                </div>
+              </div>
+              {flight.status === 'delayed' && (
+                <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3">
+                  <AlertCircle className="inline w-4 h-4 mr-2 align-middle" />
+                  Flight is delayed
+                </div>
+              )}
+            </Card>
+          ))}
         </div>
       </section>
-      
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Download Our App for Exclusive Flight Deals
-          </h2>
-          <p className="text-white/80 max-w-3xl mx-auto mb-8">
-            Get special mobile-only discounts, instant notifications for price drops, and manage your bookings on the go.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button 
-              variant="accent" 
-              size="lg"
-              className="min-w-[200px]"
-            >
-              Download App
-            </Button>
-          </div>
-        </div>
-      </section>
+
+      {/* Replace Tag with Bookmark and Train with Plane */}
+      <Bookmark className="mr-2 h-4 w-4" />
+      <Plane className="w-5 h-5 mr-2" />
     </MainLayout>
   );
 };

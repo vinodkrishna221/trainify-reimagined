@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Card from '@/components/common/Card';
+import ParticleBackground from '@/components/common/ParticleBackground';
 
 const Help = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,9 +17,10 @@ const Help = () => {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
+      {/* Hero Section with Particles */}
+      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-16 overflow-hidden">
+        <ParticleBackground className="absolute inset-0" />
+        <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">How Can We Help You?</h1>
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
             Find answers to frequently asked questions and learn how to make the most of IRCTC Express
