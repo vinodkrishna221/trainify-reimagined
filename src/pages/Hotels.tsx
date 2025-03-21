@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Building, Calendar, Users, Search, MapPin, Star, Wifi, Coffee, Tv, Parking } from 'lucide-react';
+import { Building, Calendar, Users, Search, MapPin, Star, Wifi, Coffee, Tv } from 'lucide-react';
 import { motion } from 'framer-motion';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
@@ -96,13 +95,13 @@ const Hotels = () => {
   const renderAmenityIcon = (amenity: string) => {
     switch (amenity) {
       case 'wifi':
-        return <Wifi className="h-4 w-4" title="Free WiFi" />;
+        return <Wifi className="h-4 w-4" aria-label="Free WiFi" />;
       case 'breakfast':
-        return <Coffee className="h-4 w-4" title="Breakfast Included" />;
+        return <Coffee className="h-4 w-4" aria-label="Breakfast Included" />;
       case 'parking':
-        return <Parking className="h-4 w-4" title="Free Parking" />;
+        return <Building className="h-4 w-4" aria-label="Free Parking" />;
       case 'tv':
-        return <Tv className="h-4 w-4" title="Flat-screen TV" />;
+        return <Tv className="h-4 w-4" aria-label="Flat-screen TV" />;
       default:
         return null;
     }
@@ -404,7 +403,7 @@ const Hotels = () => {
                     
                     <div className="flex items-center space-x-3 text-gray-500 mb-5">
                       {hotel.amenities.slice(0, 4).map((amenity, index) => (
-                        <div key={index} className="tooltip" title={amenity}>
+                        <div key={index} className="tooltip" aria-label={amenity}>
                           {renderAmenityIcon(amenity)}
                         </div>
                       ))}
@@ -417,7 +416,7 @@ const Hotels = () => {
                   </div>
                   
                   <div className="px-6 pb-6">
-                    <Button variant="primary" className="w-full">View Details</Button>
+                    <Button className="w-full">View Details</Button>
                   </div>
                 </Card>
               </motion.div>
@@ -509,3 +508,4 @@ const Hotels = () => {
 };
 
 export default Hotels;
+

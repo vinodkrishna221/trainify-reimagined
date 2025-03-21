@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Package, MapPin, Calendar, Users, Hourglass, Tag, Heart } from 'lucide-react';
+import { Package, MapPin, Calendar, Users, Clock, Bookmark, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
@@ -218,7 +218,7 @@ const HolidayPackages = () => {
             <Card className="p-8">
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-                  <Train className="w-8 h-8 text-irctc-royal-blue" />
+                  <Package className="w-8 h-8 text-irctc-royal-blue" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Train Travel Included</h3>
                 <p className="text-irctc-medium-gray">
@@ -242,7 +242,7 @@ const HolidayPackages = () => {
             <Card className="p-8">
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-6">
-                  <Tag className="w-8 h-8 text-amber-600" />
+                  <Bookmark className="w-8 h-8 text-amber-600" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Value for Money</h3>
                 <p className="text-irctc-medium-gray">

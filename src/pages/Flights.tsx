@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Plane, Calendar, Users, ArrowRight, Search, Filter, Clock, Wifi, Coffee } from 'lucide-react';
+import { Plane, Calendar, Users, ArrowRight, Search, Filter, Clock, Wifi, Coffee, Bookmark, BadgePercent, Clock3, Users2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
@@ -428,7 +428,7 @@ const Flights = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Tag className="w-8 h-8 text-blue-600" />
+                <Bookmark className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold mb-2">No Hidden Charges</h3>
               <p className="text-irctc-medium-gray">Transparent pricing with no surprise fees</p>
@@ -452,7 +452,7 @@ const Flights = () => {
             
             <div className="text-center">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Train className="w-8 h-8 text-amber-600" />
+                <Plane className="w-8 h-8 text-amber-600" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Combo Discounts</h3>
               <p className="text-irctc-medium-gray">Special offers when booking with train tickets</p>
