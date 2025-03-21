@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   User, Settings, CreditCard, TicketCheck, MapPin, Calendar, 
   Clock, ChevronRight, BellRing, LogOut, Train, Plane, Building,
-  ShieldCheck, Star, TrendingUp
+  ShieldCheck, Star, TrendingUp, ChevronDown, Plus, X
 } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
@@ -12,8 +12,27 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const Dashboard = () => {
+  const [openSections, setOpenSections] = useState({
+    upcomingTrips: true,
+    recentActivity: false,
+    notifications: true,
+    quickStats: true,
+    recommendations: false
+  });
+
+  const toggleSection = (section: string) => {
+    setOpenSections({
+      ...openSections,
+      [section]: !openSections[section as keyof typeof openSections]
+    });
+  };
+
   const upcomingTrips = [
     {
       id: 1,
@@ -192,561 +211,657 @@ const Dashboard = () => {
     }
   };
 
-  // Particle animation container reference
-  const particlesRef = React.useRef<HTMLDivElement>(null);
-  
   return (
     <MainLayout>
       {/* Hero Section with User Welcome */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-800 pt-16 pb-12">
+      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-800 pt-10 pb-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-white mb-8 md:mb-0">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">Welcome, Rahul!</h1>
-              <p className="text-white/80">
-                Manage your bookings, track trips, and discover personalized travel recommendations.
+            <div className="text-white mb-6 md:mb-0">
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, Rahul!</h1>
+              <p className="text-white/80 text-sm md:text-base">
+                Manage your bookings, track trips, and discover personalized recommendations.
               </p>
             </div>
             
             <div className="flex space-x-3">
-              <Button variant="outline" className="bg-white/10 border-white text-white hover:bg-white/20">
-                <Settings className="w-4 h-4 mr-2" />
-                Account Settings
-              </Button>
-              <Button className="bg-white text-blue-600 hover:bg-white/90">
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="bg-white/10 border-white text-white hover:bg-white/20">
+                    <User className="w-4 h-4 mr-2" />
+                    Profile
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Your Profile</SheetTitle>
+                  </SheetHeader>
+                  <div className="py-6">
+                    <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                      <div className="flex items-center mb-4">
+                        <div className="bg-blue-600 rounded-full p-3">
+                          <User className="h-6 w-6 text-white" />
+                        </div>
+                        <div className="ml-3">
+                          <h3 className="text-xl font-semibold">Rahul Sharma</h3>
+                          <p className="text-gray-500 text-sm">rahul.s@example.com</p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span>Profile Completion</span>
+                            <span>80%</span>
+                          </div>
+                          <Progress value={80} className="h-2" />
+                        </div>
+                        <Button variant="outline" size="sm" className="w-full">
+                          <Settings className="w-4 h-4 mr-2" /> 
+                          Account Settings
+                        </Button>
+                        <Button size="sm" className="w-full">
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="travelers">
+                        <AccordionTrigger className="text-sm font-medium">
+                          Saved Travelers
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                              <div className="flex items-center">
+                                <User className="h-4 w-4 mr-2 text-gray-500" />
+                                <span>Rahul Sharma (You)</span>
+                              </div>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                              <div className="flex items-center">
+                                <User className="h-4 w-4 mr-2 text-gray-500" />
+                                <span>Priya Sharma</span>
+                              </div>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <Button variant="outline" size="sm" className="w-full mt-2">
+                              <Plus className="h-3 w-3 mr-1" /> Add Traveler
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="payment">
+                        <AccordionTrigger className="text-sm font-medium">
+                          Saved Payment Methods
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                              <div className="flex items-center">
+                                <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
+                                <span>•••• •••• •••• 4523</span>
+                              </div>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <Button variant="outline" size="sm" className="w-full mt-2">
+                              <Plus className="h-3 w-3 mr-1" /> Add Payment Method
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="preferences">
+                        <AccordionTrigger className="text-sm font-medium">
+                          Travel Preferences
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-3 text-sm">
+                            <div className="flex items-center justify-between">
+                              <span>Preferred Seat Type</span>
+                              <span className="text-blue-600">Window</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span>Meal Preference</span>
+                              <span className="text-blue-600">Vegetarian</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span>Travel Class</span>
+                              <span className="text-blue-600">AC 2 Tier</span>
+                            </div>
+                            <Button variant="outline" size="sm" className="w-full mt-1">
+                              Edit Preferences
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+                </SheetContent>
+              </Sheet>
+              
+              <Button variant="outline" className="bg-white text-blue-600 hover:bg-white/90">
+                <TicketCheck className="w-4 h-4 mr-2" />
+                Book Now
               </Button>
             </div>
           </div>
         </div>
-        
-        {/* Particle animation container */}
-        <div 
-          ref={particlesRef} 
-          className="absolute inset-0 z-0 overflow-hidden"
-          id="tsparticles"
-        ></div>
       </section>
       
-      {/* Quick Stats Section */}
-      <section className="py-8 bg-white">
+      {/* Main Dashboard Content - Reorganized with Collapsible Sections */}
+      <section className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+          {/* Quick Stats Section */}
+          <Collapsible 
+            open={openSections.quickStats} 
+            onOpenChange={() => toggleSection('quickStats')}
+            className="mb-6"
           >
-            {quickStats.map((stat, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <Card className="p-5">
-                  <div className="flex items-center">
-                    <div className={`w-12 h-12 rounded-full ${stat.color} flex items-center justify-center mr-4`}>
-                      {stat.icon}
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-500">{stat.title}</div>
-                      <div className="text-2xl font-bold">{stat.value}</div>
-                      <div className="text-xs text-gray-500">{stat.change}</div>
-                    </div>
-                  </div>
-                </Card>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Quick Stats</h2>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  {openSections.quickStats ? 
+                    <ChevronDown className="h-4 w-4" /> : 
+                    <ChevronRight className="h-4 w-4" />
+                  }
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent>
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {quickStats.map((stat, index) => (
+                  <motion.div key={index} variants={itemVariants}>
+                    <Card className="p-4">
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 rounded-full ${stat.color} flex items-center justify-center mr-3`}>
+                          {stat.icon}
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-500">{stat.title}</div>
+                          <div className="text-xl font-bold">{stat.value}</div>
+                          <div className="text-xs text-gray-500">{stat.change}</div>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Main Dashboard Content */}
-      <section className="py-8 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            </CollapsibleContent>
+          </Collapsible>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Upcoming Trips */}
             <div className="lg:col-span-2">
-              <Card className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-semibold flex items-center">
-                    <Calendar className="w-5 h-5 mr-2 text-irctc-royal-blue" />
-                    Upcoming Trips
-                  </h2>
-                  <Button variant="outline" size="sm">
-                    View All Trips
-                  </Button>
-                </div>
-                
-                <div className="space-y-4">
-                  {upcomingTrips.length > 0 ? (
-                    upcomingTrips.map((trip) => (
-                      <motion.div 
-                        key={trip.id}
-                        whileHover={{ scale: 1.01 }}
-                        className="border border-gray-100 rounded-lg p-4 hover:shadow-sm transition-all"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start">
-                            <div className="bg-gray-100 p-3 rounded-lg mr-4">
-                              {getIconForTripType(trip.type)}
+              {/* Upcoming Trips Section */}
+              <Collapsible 
+                open={openSections.upcomingTrips} 
+                onOpenChange={() => toggleSection('upcomingTrips')}
+                className="mb-6"
+              >
+                <Card className="overflow-hidden">
+                  <div className="flex justify-between items-center p-4 border-b">
+                    <h2 className="text-lg font-semibold flex items-center">
+                      <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                      Upcoming Trips
+                    </h2>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm">
+                        View All
+                      </Button>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1">
+                          {openSections.upcomingTrips ? 
+                            <ChevronDown className="h-4 w-4" /> : 
+                            <ChevronRight className="h-4 w-4" />
+                          }
+                        </Button>
+                      </CollapsibleTrigger>
+                    </div>
+                  </div>
+                  
+                  <CollapsibleContent>
+                    <div className="divide-y">
+                      {upcomingTrips.length > 0 ? (
+                        upcomingTrips.map((trip) => (
+                          <motion.div 
+                            key={trip.id}
+                            whileHover={{ scale: 1.01 }}
+                            className="p-4 hover:bg-gray-50 transition-all"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start">
+                                <div className="bg-gray-100 p-2 rounded-lg mr-3">
+                                  {getIconForTripType(trip.type)}
+                                </div>
+                                <div>
+                                  <div className="font-medium">{trip.title}</div>
+                                  <div className="text-xs text-gray-500">{trip.details}</div>
+                                  <div className="mt-1 flex items-center text-xs">
+                                    <Calendar className="w-3 h-3 mr-1 text-gray-400" />
+                                    <span className="mr-3">{trip.date}</span>
+                                    <Clock className="w-3 h-3 mr-1 text-gray-400" />
+                                    <span>{trip.time}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-col items-end">
+                                <StatusIndicator type={getStatusColor(trip.status)} showDot size="sm">
+                                  {trip.status.charAt(0).toUpperCase() + trip.status.slice(1)}
+                                </StatusIndicator>
+                                <div className="mt-1 text-xs text-gray-500">
+                                  PNR: {trip.pnr}
+                                </div>
+                                <Button variant="ghost" size="sm" className="mt-1 h-7 text-xs">
+                                  View
+                                </Button>
+                              </div>
                             </div>
-                            <div>
-                              <div className="font-semibold text-lg">{trip.title}</div>
-                              <div className="text-sm text-gray-500">{trip.details}</div>
-                              <div className="mt-2 flex items-center text-sm">
-                                <Calendar className="w-4 h-4 mr-1 text-gray-400" />
-                                <span className="mr-4">{trip.date}</span>
-                                <Clock className="w-4 h-4 mr-1 text-gray-400" />
-                                <span>{trip.time}</span>
+                          </motion.div>
+                        ))
+                      ) : (
+                        <div className="text-center py-6">
+                          <div className="text-gray-400 mb-2 text-sm">No upcoming trips</div>
+                          <Button variant="outline" size="sm">
+                            Book a Trip
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </CollapsibleContent>
+                </Card>
+              </Collapsible>
+              
+              {/* Recent Activity Section */}
+              <Collapsible 
+                open={openSections.recentActivity} 
+                onOpenChange={() => toggleSection('recentActivity')}
+                className="mb-6"
+              >
+                <Card className="overflow-hidden">
+                  <div className="flex justify-between items-center p-4 border-b">
+                    <h2 className="text-lg font-semibold">Recent Activity</h2>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="p-1">
+                        {openSections.recentActivity ? 
+                          <ChevronDown className="h-4 w-4" /> : 
+                          <ChevronRight className="h-4 w-4" />
+                        }
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
+                  
+                  <CollapsibleContent>
+                    <div className="p-4">
+                      <Tabs defaultValue="bookings" className="w-full">
+                        <TabsList className="mb-4 w-full justify-start">
+                          <TabsTrigger value="bookings" className="text-xs">Recent Bookings</TabsTrigger>
+                          <TabsTrigger value="searches" className="text-xs">Recent Searches</TabsTrigger>
+                          <TabsTrigger value="payments" className="text-xs">Payment History</TabsTrigger>
+                        </TabsList>
+                        
+                        <TabsContent value="bookings" className="mt-0">
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Booking</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Amount</TableHead>
+                                <TableHead>Status</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {recentBookings.map((booking) => (
+                                <TableRow key={booking.id} className="cursor-pointer hover:bg-gray-50">
+                                  <TableCell>
+                                    <div className="flex items-center">
+                                      <div className="bg-gray-100 p-1.5 rounded-md mr-2">
+                                        {getIconForTripType(booking.type)}
+                                      </div>
+                                      <span className="text-sm font-medium">{booking.title}</span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-sm">{booking.date}</TableCell>
+                                  <TableCell className="text-sm font-medium">{booking.amount}</TableCell>
+                                  <TableCell>
+                                    <StatusIndicator 
+                                      type={getStatusColor(booking.status)} 
+                                      showDot 
+                                      size="sm"
+                                    >
+                                      {booking.status}
+                                    </StatusIndicator>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TabsContent>
+                        
+                        <TabsContent value="searches" className="mt-0">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between p-3 rounded bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                              <div className="flex items-center">
+                                <div className="bg-white p-1.5 rounded-md mr-2">
+                                  <Train className="h-4 w-4 text-blue-600" />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium">Delhi to Mumbai</div>
+                                  <div className="text-xs text-gray-500">Jul 15, 2023</div>
+                                </div>
+                              </div>
+                              <Button variant="outline" size="sm" className="h-7 text-xs">
+                                Search Again
+                              </Button>
+                            </div>
+                            
+                            <div className="flex items-center justify-between p-3 rounded bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                              <div className="flex items-center">
+                                <div className="bg-white p-1.5 rounded-md mr-2">
+                                  <Plane className="h-4 w-4 text-indigo-600" />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium">Bengaluru to Hyderabad</div>
+                                  <div className="text-xs text-gray-500">Aug 22, 2023</div>
+                                </div>
+                              </div>
+                              <Button variant="outline" size="sm" className="h-7 text-xs">
+                                Search Again
+                              </Button>
+                            </div>
+                          </div>
+                        </TabsContent>
+                        
+                        <TabsContent value="payments" className="mt-0">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between p-3 rounded bg-gray-50">
+                              <div className="flex items-center">
+                                <div className="bg-white p-1.5 rounded-md mr-2">
+                                  <CreditCard className="h-4 w-4 text-gray-700" />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium">Flight Booking Payment</div>
+                                  <div className="text-xs text-gray-500">Jun 28, 2023</div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm font-medium">₹4,580</div>
+                                <div className="text-xs text-green-600">Successful</div>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center justify-between p-3 rounded bg-gray-50">
+                              <div className="flex items-center">
+                                <div className="bg-white p-1.5 rounded-md mr-2">
+                                  <CreditCard className="h-4 w-4 text-gray-700" />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium">Train Ticket Payment</div>
+                                  <div className="text-xs text-gray-500">Jun 18, 2023</div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm font-medium">₹1,245</div>
+                                <div className="text-xs text-green-600">Successful</div>
                               </div>
                             </div>
                           </div>
-                          
-                          <div className="flex flex-col items-end">
-                            <StatusIndicator type={getStatusColor(trip.status)} showDot>
-                              {trip.status.charAt(0).toUpperCase() + trip.status.slice(1)}
-                            </StatusIndicator>
-                            <div className="mt-2 text-sm text-gray-500">
-                              PNR: {trip.pnr}
-                            </div>
-                            <Button variant="ghost" size="sm" className="mt-2">
-                              View Details
-                            </Button>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8">
-                      <div className="text-gray-400 mb-2">No upcoming trips</div>
-                      <Button variant="outline" size="sm">
-                        Book a Trip
-                      </Button>
+                        </TabsContent>
+                      </Tabs>
                     </div>
-                  )}
-                </div>
-              </Card>
+                  </CollapsibleContent>
+                </Card>
+              </Collapsible>
               
-              {/* Tabs Section for Recent Activity */}
-              <Card className="p-6 mt-8">
-                <h2 className="text-xl font-semibold mb-6">Recent Activity</h2>
-                
-                <Tabs defaultValue="bookings">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="bookings">Recent Bookings</TabsTrigger>
-                    <TabsTrigger value="searches">Recent Searches</TabsTrigger>
-                    <TabsTrigger value="payments">Payment History</TabsTrigger>
-                  </TabsList>
+              {/* Recommended Trips Section */}
+              <Collapsible 
+                open={openSections.recommendations} 
+                onOpenChange={() => toggleSection('recommendations')}
+              >
+                <Card className="overflow-hidden">
+                  <div className="flex justify-between items-center p-4 border-b">
+                    <h2 className="text-lg font-semibold">Recommended For You</h2>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm">
+                        View All
+                      </Button>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1">
+                          {openSections.recommendations ? 
+                            <ChevronDown className="h-4 w-4" /> : 
+                            <ChevronRight className="h-4 w-4" />
+                          }
+                        </Button>
+                      </CollapsibleTrigger>
+                    </div>
+                  </div>
                   
-                  <TabsContent value="bookings" className="mt-0">
-                    <div className="space-y-4">
-                      {recentBookings.map((booking) => (
-                        <div key={booking.id} className="flex items-center justify-between p-3 border-b last:border-0">
-                          <div className="flex items-center">
-                            <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                              {getIconForTripType(booking.type)}
+                  <CollapsibleContent>
+                    <div className="p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="overflow-hidden h-full flex flex-col border-none shadow-sm">
+                          <div className="h-32 w-full">
+                            <img 
+                              src="https://images.unsplash.com/photo-1534126511673-b6899657816a?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
+                              alt="Kolkata" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-3 flex-grow">
+                            <h3 className="font-semibold text-base">Kolkata to Delhi</h3>
+                            <p className="text-xs text-gray-500 mb-2">Based on your previous trips</p>
+                            <div className="flex items-center text-xs text-gray-700 mb-1">
+                              <Train className="h-3 w-3 mr-1 text-blue-600" />
+                              <span>Rajdhani Express • 20h 45m</span>
                             </div>
-                            <div>
-                              <div className="font-medium">{booking.title}</div>
-                              <div className="text-sm text-gray-500">{booking.date}</div>
+                            <div className="flex items-center text-xs text-gray-700">
+                              <Calendar className="h-3 w-3 mr-1 text-blue-600" />
+                              <span>Available next week</span>
                             </div>
                           </div>
-                          
-                          <div className="flex items-center">
-                            <div className="text-right mr-4">
-                              <div className="font-medium">{booking.amount}</div>
-                              <StatusIndicator 
-                                type={getStatusColor(booking.status)} 
-                                showDot 
-                                size="sm"
-                              >
-                                {booking.status}
+                          <div className="p-3 pt-0 mt-auto">
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="text-base font-bold text-blue-600">₹2,345</div>
+                              <StatusIndicator type="success" showDot size="sm">
+                                Available
                               </StatusIndicator>
                             </div>
-                            <Button variant="ghost" size="icon">
-                              <ChevronRight className="h-5 w-5" />
+                            <Button size="sm" className="w-full h-8 text-xs">
+                              Book Now
                             </Button>
                           </div>
+                        </Card>
+                        
+                        <Card className="overflow-hidden h-full flex flex-col border-none shadow-sm">
+                          <div className="h-32 w-full">
+                            <img 
+                              src="https://images.unsplash.com/photo-1586183189334-0589346aedbb?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
+                              alt="Jaipur" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-3 flex-grow">
+                            <h3 className="font-semibold text-base">Weekend in Jaipur</h3>
+                            <p className="text-xs text-gray-500 mb-2">Special package for you</p>
+                            <div className="flex items-center text-xs text-gray-700 mb-1">
+                              <Train className="h-3 w-3 mr-1 text-blue-600" />
+                              <span>Delhi to Jaipur • 4h 30m</span>
+                            </div>
+                            <div className="flex items-center text-xs text-gray-700">
+                              <Building className="h-3 w-3 mr-1 text-purple-600" />
+                              <span>2 Nights at Royal Palace Hotel</span>
+                            </div>
+                          </div>
+                          <div className="p-3 pt-0 mt-auto">
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="text-base font-bold text-blue-600">₹12,999</div>
+                              <StatusIndicator type="warning" showDot size="sm">
+                                Limited
+                              </StatusIndicator>
+                            </div>
+                            <Button size="sm" className="w-full h-8 text-xs">
+                              View Package
+                            </Button>
+                          </div>
+                        </Card>
+                        
+                        <Card className="overflow-hidden h-full flex flex-col border-none shadow-sm">
+                          <div className="h-32 w-full">
+                            <img 
+                              src="https://images.unsplash.com/photo-1596422846543-75c6fc197825?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
+                              alt="Bengaluru" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-3 flex-grow">
+                            <h3 className="font-semibold text-base">Flights to Bengaluru</h3>
+                            <p className="text-xs text-gray-500 mb-2">Special discount this month</p>
+                            <div className="flex items-center text-xs text-gray-700 mb-1">
+                              <Plane className="h-3 w-3 mr-1 text-indigo-600" />
+                              <span>Delhi to Bengaluru • 2h 45m</span>
+                            </div>
+                            <div className="flex items-center text-xs text-gray-700">
+                              <Calendar className="h-3 w-3 mr-1 text-indigo-600" />
+                              <span>Multiple dates available</span>
+                            </div>
+                          </div>
+                          <div className="p-3 pt-0 mt-auto">
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="text-base font-bold text-blue-600">₹4,799</div>
+                              <StatusIndicator type="success" showDot size="sm">
+                                15% Off
+                              </StatusIndicator>
+                            </div>
+                            <Button size="sm" className="w-full h-8 text-xs">
+                              Book Flight
+                            </Button>
+                          </div>
+                        </Card>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Card>
+              </Collapsible>
+            </div>
+            
+            {/* Right Column - Notifications & Frequent Routes */}
+            <div className="space-y-6">
+              {/* Notifications Section */}
+              <Collapsible 
+                open={openSections.notifications} 
+                onOpenChange={() => toggleSection('notifications')}
+              >
+                <Card className="overflow-hidden">
+                  <div className="flex justify-between items-center p-4 border-b">
+                    <h2 className="text-lg font-semibold flex items-center">
+                      <BellRing className="w-5 h-5 mr-2 text-blue-600" />
+                      Notifications
+                    </h2>
+                    <div className="flex space-x-2">
+                      <Button variant="ghost" size="sm">
+                        Mark All Read
+                      </Button>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1">
+                          {openSections.notifications ? 
+                            <ChevronDown className="h-4 w-4" /> : 
+                            <ChevronRight className="h-4 w-4" />
+                          }
+                        </Button>
+                      </CollapsibleTrigger>
+                    </div>
+                  </div>
+                  
+                  <CollapsibleContent>
+                    <div className="max-h-[450px] overflow-y-auto">
+                      {notifications.map((notification) => (
+                        <div 
+                          key={notification.id} 
+                          className={`p-3 border-l-4 ${notification.isRead ? 'border-gray-200 bg-white' : 'border-blue-600 bg-blue-50'} border-b`}
+                        >
+                          <div className="flex justify-between">
+                            <div className="font-medium text-sm mb-1">{notification.title}</div>
+                            {!notification.isRead && (
+                              <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                <X className="h-3 w-3" />
+                              </Button>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 mb-1">{notification.message}</p>
+                          <div className="text-xs text-gray-500">{notification.time}</div>
                         </div>
                       ))}
                     </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="searches" className="mt-0">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <Train className="h-5 w-5 text-irctc-royal-blue" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Delhi to Mumbai</div>
-                            <div className="text-sm text-gray-500">Jul 15, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <Button variant="outline" size="sm">
-                          Search Again
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <Plane className="h-5 w-5 text-indigo-600" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Bengaluru to Hyderabad</div>
-                            <div className="text-sm text-gray-500">Aug 22, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <Button variant="outline" size="sm">
-                          Search Again
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <Building className="h-5 w-5 text-purple-600" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Hotels in Udaipur</div>
-                            <div className="text-sm text-gray-500">Aug 12-15, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <Button variant="outline" size="sm">
-                          Search Again
-                        </Button>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="payments" className="mt-0">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <CreditCard className="h-5 w-5 text-gray-700" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Flight Booking Payment</div>
-                            <div className="text-sm text-gray-500">Jun 28, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <div className="text-right">
-                          <div className="font-medium">₹4,580</div>
-                          <div className="text-xs text-green-600">Successful</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <CreditCard className="h-5 w-5 text-gray-700" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Train Ticket Payment</div>
-                            <div className="text-sm text-gray-500">Jun 18, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <div className="text-right">
-                          <div className="font-medium">₹1,245</div>
-                          <div className="text-xs text-green-600">Successful</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center">
-                          <div className="bg-gray-100 p-2 rounded-lg mr-3">
-                            <CreditCard className="h-5 w-5 text-gray-700" />
-                          </div>
-                          <div>
-                            <div className="font-medium">Hotel Booking Payment</div>
-                            <div className="text-sm text-gray-500">May 25, 2023</div>
-                          </div>
-                        </div>
-                        
-                        <div className="text-right">
-                          <div className="font-medium">₹18,500</div>
-                          <div className="text-xs text-green-600">Successful</div>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </Card>
-            </div>
-            
-            {/* Right Column - User Info & Notifications */}
-            <div className="space-y-8">
-              {/* User Profile Card */}
-              <Card className="p-6">
-                <div className="flex items-center mb-6">
-                  <div className="bg-irctc-royal-blue p-3 rounded-full mr-4">
-                    <User className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold">Rahul Sharma</h3>
-                    <p className="text-gray-500">rahul.s@example.com</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Profile Completion</span>
-                      <span>80%</span>
-                    </div>
-                    <Progress value={80} className="h-2" />
-                  </div>
-                  
-                  <div className="pt-4 border-t">
-                    <div className="flex justify-between items-center mb-3">
-                      <div className="text-sm font-medium">Saved Travelers</div>
+                    <div className="p-3 text-center border-t">
                       <Button variant="ghost" size="sm">
-                        Add New
+                        View All Notifications
                       </Button>
                     </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                        <div className="flex items-center">
-                          <User className="h-4 w-4 mr-2 text-gray-500" />
-                          <span>Rahul Sharma (You)</span>
-                        </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                        <div className="flex items-center">
-                          <User className="h-4 w-4 mr-2 text-gray-500" />
-                          <span>Priya Sharma</span>
-                        </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4 border-t">
-                    <div className="flex justify-between items-center mb-3">
-                      <div className="text-sm font-medium">Saved Payment Methods</div>
-                      <Button variant="ghost" size="sm">
-                        Add New
-                      </Button>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                        <div className="flex items-center">
-                          <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
-                          <span>•••• •••• •••• 4523</span>
-                        </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Button variant="outline" className="w-full">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Manage Profile
-                  </Button>
-                </div>
-              </Card>
+                  </CollapsibleContent>
+                </Card>
+              </Collapsible>
               
-              {/* Notifications Card */}
-              <Card className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-semibold flex items-center">
-                    <BellRing className="w-5 h-5 mr-2 text-irctc-royal-blue" />
-                    Notifications
-                  </h3>
-                  <Button variant="ghost" size="sm">
-                    Mark All As Read
-                  </Button>
-                </div>
-                
-                <div className="space-y-4">
-                  {notifications.map((notification) => (
-                    <div 
-                      key={notification.id} 
-                      className={`p-3 border-l-4 rounded-sm ${notification.isRead ? 'border-gray-200 bg-gray-50' : 'border-irctc-royal-blue bg-blue-50'}`}
-                    >
-                      <div className="font-medium mb-1">{notification.title}</div>
-                      <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
-                      <div className="text-xs text-gray-500">{notification.time}</div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-4 text-center">
-                  <Button variant="ghost" size="sm">
-                    View All Notifications
-                  </Button>
-                </div>
-              </Card>
-              
-              {/* Saved Locations */}
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold flex items-center mb-4">
-                  <MapPin className="w-5 h-5 mr-2 text-irctc-royal-blue" />
+              {/* Frequent Routes Card */}
+              <Card className="p-4">
+                <h3 className="text-lg font-semibold flex items-center mb-3">
+                  <MapPin className="w-5 h-5 mr-2 text-blue-600" />
                   Frequent Routes
                 </h3>
                 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
                     <div>
-                      <div className="font-medium">Delhi → Mumbai</div>
+                      <div className="font-medium text-sm">Delhi → Mumbai</div>
                       <div className="text-xs text-gray-500">5 times in last 6 months</div>
                     </div>
-                    <Button variant="ghost" size="icon">
-                      <Train className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-7 w-7">
+                      <Train className="h-3 w-3" />
                     </Button>
                   </div>
                   
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
                     <div>
-                      <div className="font-medium">Delhi → Bengaluru</div>
+                      <div className="font-medium text-sm">Delhi → Bengaluru</div>
                       <div className="text-xs text-gray-500">3 times in last 6 months</div>
                     </div>
-                    <Button variant="ghost" size="icon">
-                      <Plane className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-7 w-7">
+                      <Plane className="h-3 w-3" />
                     </Button>
                   </div>
                   
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
                     <div>
-                      <div className="font-medium">Mumbai → Pune</div>
+                      <div className="font-medium text-sm">Mumbai → Pune</div>
                       <div className="text-xs text-gray-500">2 times in last 6 months</div>
                     </div>
-                    <Button variant="ghost" size="icon">
-                      <Train className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-7 w-7">
+                      <Train className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
+                
+                <Button variant="outline" size="sm" className="w-full mt-3">
+                  View All Routes
+                </Button>
               </Card>
             </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Recommended Trips Section */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold">Recommended For You</h2>
-            <Button variant="outline" size="sm">
-              View All
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="overflow-hidden h-full flex flex-col">
-              <div className="h-40 w-full">
-                <img 
-                  src="https://images.unsplash.com/photo-1534126511673-b6899657816a?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
-                  alt="Kolkata" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4 flex-grow">
-                <h3 className="font-semibold text-lg mb-1">Kolkata to Delhi</h3>
-                <p className="text-sm text-gray-500 mb-3">Based on your previous trips</p>
-                <div className="flex items-center text-sm text-gray-700 mb-2">
-                  <Train className="h-4 w-4 mr-2 text-irctc-royal-blue" />
-                  <span>Rajdhani Express • 20h 45m</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-700">
-                  <Calendar className="h-4 w-4 mr-2 text-irctc-royal-blue" />
-                  <span>Available next week</span>
-                </div>
-              </div>
-              <div className="p-4 pt-0 mt-auto">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-lg font-bold text-irctc-royal-blue">₹2,345</div>
-                  <StatusIndicator type="success" showDot>
-                    Seats Available
-                  </StatusIndicator>
-                </div>
-                <Button className="w-full">
-                  Book Now
-                </Button>
-              </div>
-            </Card>
-            
-            <Card className="overflow-hidden h-full flex flex-col">
-              <div className="h-40 w-full">
-                <img 
-                  src="https://images.unsplash.com/photo-1586183189334-0589346aedbb?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
-                  alt="Jaipur" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4 flex-grow">
-                <h3 className="font-semibold text-lg mb-1">Weekend in Jaipur</h3>
-                <p className="text-sm text-gray-500 mb-3">Special package for you</p>
-                <div className="flex items-center text-sm text-gray-700 mb-2">
-                  <Train className="h-4 w-4 mr-2 text-irctc-royal-blue" />
-                  <span>Delhi to Jaipur • 4h 30m</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-700">
-                  <Building className="h-4 w-4 mr-2 text-purple-600" />
-                  <span>2 Nights at Royal Palace Hotel</span>
-                </div>
-              </div>
-              <div className="p-4 pt-0 mt-auto">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-lg font-bold text-irctc-royal-blue">₹12,999</div>
-                  <StatusIndicator type="warning" showDot>
-                    Limited Offer
-                  </StatusIndicator>
-                </div>
-                <Button className="w-full">
-                  View Package
-                </Button>
-              </div>
-            </Card>
-            
-            <Card className="overflow-hidden h-full flex flex-col">
-              <div className="h-40 w-full">
-                <img 
-                  src="https://images.unsplash.com/photo-1596422846543-75c6fc197825?ixlib=rb-4.0.3&q=85&w=400&h=200&crop=center" 
-                  alt="Bengaluru" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4 flex-grow">
-                <h3 className="font-semibold text-lg mb-1">Flights to Bengaluru</h3>
-                <p className="text-sm text-gray-500 mb-3">Special discount this month</p>
-                <div className="flex items-center text-sm text-gray-700 mb-2">
-                  <Plane className="h-4 w-4 mr-2 text-indigo-600" />
-                  <span>Delhi to Bengaluru • 2h 45m</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-700">
-                  <Calendar className="h-4 w-4 mr-2 text-indigo-600" />
-                  <span>Multiple dates available</span>
-                </div>
-              </div>
-              <div className="p-4 pt-0 mt-auto">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-lg font-bold text-irctc-royal-blue">₹4,799</div>
-                  <StatusIndicator type="success" showDot>
-                    15% Off
-                  </StatusIndicator>
-                </div>
-                <Button className="w-full">
-                  Book Flight
-                </Button>
-              </div>
-            </Card>
           </div>
         </div>
       </section>
