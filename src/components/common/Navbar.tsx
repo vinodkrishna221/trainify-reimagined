@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, User, ChevronDown, Train, Package, Plane, Hotel, CreditCard, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Button from './Button';
@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Holiday Packages',
-    href: '/packages',
+    href: '/holiday-packages',
     icon: <Package className="w-4 h-4" />,
   },
   {
@@ -55,6 +55,7 @@ const navItems: NavItem[] = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -75,6 +76,14 @@ const Navbar = () => {
 
   const toggleDropdown = (label: string) => {
     setOpenDropdown(openDropdown === label ? null : label);
+  };
+
+  const handleNavigation = (href: string, hasChildren: boolean, label: string) => {
+    if (hasChildren) {
+      toggleDropdown(label);
+    } else {
+      navigate(href);
+    }
   };
 
   return (
@@ -101,7 +110,7 @@ const Navbar = () => {
                   location.pathname === item.href ? "text-irctc-royal-blue font-medium" : "text-irctc-dark-gray hover:text-irctc-royal-blue hover:bg-irctc-royal-blue/5",
                   item.highlight && "text-irctc-orange font-medium"
                 )}
-                onClick={() => item.children && toggleDropdown(item.label)}
+                onClick={() => handleNavigation(item.href, !!item.children, item.label)}
               >
                 {item.icon && <span>{item.icon}</span>}
                 <span>{item.label}</span>
@@ -141,14 +150,14 @@ const Navbar = () => {
             variant="ghost" 
             size="sm" 
             icon={<User className="w-4 h-4" />}
-            onClick={() => window.location.href = '/login'}
+            onClick={() => navigate('/login')}
           >
             Login
           </Button>
           <Button 
             variant="primary" 
             size="sm"
-            onClick={() => window.location.href = '/login?signup=true'}
+            onClick={() => navigate('/login?signup=true')}
           >
             Register
           </Button>
@@ -182,7 +191,7 @@ const Navbar = () => {
                           "flex items-center justify-between py-3.5 border-b border-gray-100",
                           item.highlight && "text-irctc-orange font-medium"
                         )}
-                        onClick={() => item.children && toggleDropdown(item.label)}
+                        onClick={() => item.children ? toggleDropdown(item.label) : navigate(item.href)}
                       >
                         <div className="flex items-center gap-3">
                           {item.icon && <span className="text-irctc-medium-gray">{item.icon}</span>}
@@ -238,14 +247,14 @@ const Navbar = () => {
                     variant="outline" 
                     fullWidth 
                     icon={<User className="w-4 h-4" />}
-                    onClick={() => window.location.href = '/login'}
+                    onClick={() => navigate('/login')}
                   >
                     Login
                   </Button>
                   <Button 
                     variant="primary" 
                     fullWidth
-                    onClick={() => window.location.href = '/login?signup=true'}
+                    onClick={() => navigate('/login?signup=true')}
                   >
                     Register
                   </Button>

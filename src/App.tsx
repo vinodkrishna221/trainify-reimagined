@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useState, useCallback } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -29,6 +30,7 @@ const Flights = lazy(() => import(/* webpackChunkName: "flights" */ "./pages/Fli
 const Hotels = lazy(() => import(/* webpackChunkName: "hotels" */ "./pages/Hotels"));
 const Help = lazy(() => import(/* webpackChunkName: "help" */ "./pages/Help"));
 const Dashboard = lazy(() => import(/* webpackChunkName: "dashboard" */ "./pages/Dashboard"));
+const LoyaltyProgram = lazy(() => import(/* webpackChunkName: "loyalty" */ "./pages/LoyaltyProgram"));
 const NotFound = lazy(() => import(/* webpackChunkName: "not-found" */ "./pages/NotFound"));
 
 // Component map for prefetching
@@ -47,6 +49,7 @@ const componentMap: Record<string, () => Promise<any>> = {
   "/hotels": () => import(/* webpackChunkName: "hotels" */ "./pages/Hotels"),
   "/help": () => import(/* webpackChunkName: "help" */ "./pages/Help"),
   "/dashboard": () => import(/* webpackChunkName: "dashboard" */ "./pages/Dashboard"),
+  "/loyalty": () => import(/* webpackChunkName: "loyalty" */ "./pages/LoyaltyProgram"),
 };
 
 // Prefetch provider component
@@ -125,6 +128,7 @@ const App = () => (
                 <Route path="/hotels" element={<Hotels />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/loyalty" element={<LoyaltyProgram />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

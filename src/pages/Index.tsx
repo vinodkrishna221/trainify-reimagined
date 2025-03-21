@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, Clock, MapPin, Train, Ticket, Bell, BarChart4, Users, Star } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import SearchWidget from '@/components/common/SearchWidget';
@@ -43,6 +43,7 @@ const useAnimateOnScroll = () => {
 };
 
 const Index = () => {
+  const navigate = useNavigate();
   const animateRef = useAnimateOnScroll();
   
   const quickLinks = [
@@ -93,12 +94,6 @@ const Index = () => {
         
         <div className="container mx-auto px-4 z-10">
           <div className="grid grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-            <div className="lg:col-span-5 ml-0 mr-auto">
-              <div className="w-full max-w-md lg:max-w-full">
-                <SearchWidget />
-              </div>
-            </div>
-            
             <div className="lg:col-span-7">
               <span className="inline-block mb-3 px-3 py-1 bg-irctc-royal-blue/10 text-irctc-royal-blue text-sm font-medium rounded-full">
                 India's #1 Rail Booking Platform
@@ -110,12 +105,22 @@ const Index = () => {
                 Book train tickets effortlessly, track journeys in real-time, and enjoy seamless travel experiences with India's most trusted railway platform.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button variant="primary" size="lg">
+                <Button 
+                  variant="primary" 
+                  size="lg"
+                  onClick={() => navigate('/book-train')}
+                >
                   Book Now
                 </Button>
                 <Button variant="outline" size="lg">
                   Learn More
                 </Button>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-5 ml-0 mr-auto">
+              <div className="w-full max-w-md lg:max-w-full">
+                <SearchWidget />
               </div>
             </div>
           </div>

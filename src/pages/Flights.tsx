@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import StatusIndicator from '@/components/common/StatusIndicator';
+import ParticleBackground from '@/components/common/ParticleBackground';
 
 interface Flight {
   id: number;
@@ -109,7 +110,7 @@ const Flights = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
+      <section className="relative bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Book Your Flight Tickets</h1>
@@ -122,6 +123,7 @@ const Flights = () => {
             </Button>
           </div>
         </div>
+        <ParticleBackground className="absolute inset-0 z-0" />
       </section>
 
       {/* Search and Filter Section */}
