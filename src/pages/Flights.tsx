@@ -250,7 +250,7 @@ const Flights = () => {
                   <div className="text-md font-medium text-gray-700">{flight.duration}</div>
                   <div className="text-sm text-gray-500">{flight.stops} Stop{flight.stops !== 1 ? 's' : ''}</div>
                   <div className="text-lg font-semibold text-blue-600">₹{flight.price}</div>
-                  <Button variant="primary" size="sm">Book Now</Button>
+                  <Button variant="default" size="sm">Book Now</Button>
                 </div>
               </div>
               {flight.status === 'delayed' && (

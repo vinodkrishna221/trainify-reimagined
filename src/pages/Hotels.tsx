@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Building, Calendar, Users, Search, Star, Wifi, CreditCard, Coffee, 
-         MapPin, Filter, ArrowRight, ArrowUpDown } from 'lucide-react';
+         MapPin, Filter, ArrowRight, ArrowUpDown, Tv as TvIcon } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import ParticleBackground from '@/components/common/ParticleBackground';
 
 const Hotels = () => {
   const popularHotels = [
@@ -106,28 +108,9 @@ const Hotels = () => {
       case 'parking':
         return <Building className="text-blue-500" aria-label="Free Parking" />;
       case 'tv':
-        return <Tv className="h-4 w-4" aria-label="Flat-screen TV" />;
+        return <TvIcon className="h-4 w-4" aria-label="Flat-screen TV" />;
       default:
         return null;
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 }
     }
   };
 
@@ -302,7 +285,7 @@ const Hotels = () => {
         </div>
         
         {/* Background particle effect */}
-        <div id="particles-container" className="absolute inset-0 z-0"></div>
+        <ParticleBackground className="absolute inset-0 z-0" />
       </section>
       
       {/* Popular Cities Section */}
@@ -319,8 +302,7 @@ const Hotels = () => {
             {popularCities.map((city, index) => (
               <Card 
                 key={index}
-                interactive
-                className="overflow-hidden"
+                className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
               >
                 <div className="relative h-48">
                   <img 
@@ -362,14 +344,9 @@ const Hotels = () => {
             </div>
           </div>
           
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {popularHotels.map((hotel) => (
-              <motion.div key={hotel.id} variants={itemVariants}>
+              <div key={hotel.id}>
                 <Card className="h-full overflow-hidden flex flex-col">
                   <div className="relative">
                     <img 
@@ -408,7 +385,7 @@ const Hotels = () => {
                     
                     <div className="flex items-center space-x-3 text-gray-500 mb-5">
                       {hotel.amenities.slice(0, 4).map((amenity, index) => (
-                        <div key={index} className="tooltip" aria-label={amenity}>
+                        <div key={index} aria-label={amenity}>
                           {renderAmenityIcon(amenity)}
                         </div>
                       ))}
@@ -421,12 +398,12 @@ const Hotels = () => {
                   </div>
                   
                   <div className="px-6 pb-6">
-                    <Button className="w-full">View Details</Button>
+                    <Button variant="default" className="w-full">View Details</Button>
                   </div>
                 </Card>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
       
