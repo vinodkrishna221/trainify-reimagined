@@ -73,7 +73,6 @@ const StationInput: React.FC<StationInputProps> = ({
         />
       </div>
       
-      {/* Suggestions dropdown with fixed positioning */}
       <AnimatePresence>
         {showSuggestions && (
           <motion.div
