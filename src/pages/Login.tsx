@@ -45,6 +45,14 @@ const Login = () => {
     }
   }, [location]);
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
   const toggleFormType = () => {
     setFormType(formType === 'login' ? 'signup' : 'login');
   };
@@ -74,13 +82,15 @@ const Login = () => {
     e.preventDefault();
     
     if (formType === 'login') {
-      // Simulate login success
+      // Simulate login success - store a mock token
+      localStorage.setItem('userToken', 'user-mock-token-123');
+      
       toast({
         title: "Success!",
         description: "You've been logged in successfully.",
         variant: "default",
       });
-      setTimeout(() => navigate('/'), 1500);
+      setTimeout(() => navigate('/dashboard'), 1500);
     } else {
       if (passwordStrength < 2) {
         toast({
@@ -100,13 +110,15 @@ const Login = () => {
         return;
       }
 
-      // Simulate signup success
+      // Simulate signup success - store a mock token
+      localStorage.setItem('userToken', 'user-mock-token-123');
+      
       toast({
         title: "Account Created!",
         description: "Your account has been created successfully.",
         variant: "default",
       });
-      setTimeout(() => navigate('/'), 1500);
+      setTimeout(() => navigate('/dashboard'), 1500);
     }
   };
 

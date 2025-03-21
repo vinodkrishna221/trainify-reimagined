@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, User, ChevronDown, Train, Package, Plane, Hotel, CreditCard, HelpCircle } from 'lucide-react';
+import { Menu, X, User, ChevronDown, Train, Package, Plane, Hotel, CreditCard, HelpCircle, LayoutDashboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Button from './Button';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -60,6 +60,13 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is logged in by looking for a token in localStorage
+    const token = localStorage.getItem('userToken');
+    setIsLoggedIn(!!token);
+  }, [location]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +91,12 @@ const Navbar = () => {
     } else {
       navigate(href);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    setIsLoggedIn(false);
+    navigate('/');
   };
 
   return (
@@ -146,21 +159,43 @@ const Navbar = () => {
 
         {/* Authentication Buttons */}
         <div className="hidden lg:flex items-center gap-3">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            icon={<User className="w-4 h-4" />}
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </Button>
-          <Button 
-            variant="primary" 
-            size="sm"
-            onClick={() => navigate('/login?signup=true')}
-          >
-            Register
-          </Button>
+          {isLoggedIn ? (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                icon={<LayoutDashboard className="w-4 h-4" />}
+                onClick={() => navigate('/dashboard')}
+              >
+                Dashboard
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                icon={<User className="w-4 h-4" />}
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button 
+                variant="default" 
+                size="sm"
+                onClick={() => navigate('/login?signup=true')}
+              >
+                Register
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -243,21 +278,43 @@ const Navbar = () => {
                 
                 {/* Mobile Authentication Buttons */}
                 <div className="px-4 pt-4 pb-6 fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex flex-col gap-2">
-                  <Button 
-                    variant="outline" 
-                    fullWidth 
-                    icon={<User className="w-4 h-4" />}
-                    onClick={() => navigate('/login')}
-                  >
-                    Login
-                  </Button>
-                  <Button 
-                    variant="primary" 
-                    fullWidth
-                    onClick={() => navigate('/login?signup=true')}
-                  >
-                    Register
-                  </Button>
+                  {isLoggedIn ? (
+                    <>
+                      <Button 
+                        variant="ghost" 
+                        fullWidth 
+                        icon={<LayoutDashboard className="w-4 h-4" />}
+                        onClick={() => navigate('/dashboard')}
+                      >
+                        Dashboard
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        fullWidth
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        fullWidth 
+                        icon={<User className="w-4 h-4" />}
+                        onClick={() => navigate('/login')}
+                      >
+                        Login
+                      </Button>
+                      <Button 
+                        variant="default" 
+                        fullWidth
+                        onClick={() => navigate('/login?signup=true')}
+                      >
+                        Register
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
