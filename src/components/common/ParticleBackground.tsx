@@ -37,10 +37,10 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({
   }, []);
 
   return (
-    <div className={`absolute inset-0 z-0 overflow-hidden ${className}`}>
+    <div className={`absolute inset-0 -z-10 overflow-hidden ${className}`}>
       {/* Background image */}
       <div 
-        className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+        className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-5"
         style={{ 
           backgroundImage: `url(${imageSrc})`,
           backgroundSize: isMobile ? '250% auto' : 'cover',
@@ -51,7 +51,7 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({
       {/* Optional overlay */}
       {overlay && (
         <div 
-          className={`absolute inset-0 ${overlayColor}`}
+          className={`absolute inset-0 ${overlayColor} -z-5`}
           style={{ opacity: overlayOpacity }}
         />
       )}

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Building, Calendar, Users, Search, Star, Wifi, CreditCard, Coffee, 
@@ -118,14 +119,14 @@ const Hotels = () => {
     <MainLayout>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Find Your Perfect Stay</h1>
             <p className="text-xl text-white/90 mb-8 text-center">
               Discover luxury hotels, cozy guesthouses, and everything in between
             </p>
             
-            <Card className="bg-white rounded-xl p-6 shadow-lg">
+            <Card className="bg-white rounded-xl p-6 shadow-lg relative z-10">
               <Tabs defaultValue="hotels" className="w-full">
                 <TabsList className="mb-6 w-full bg-gray-100 p-1">
                   <TabsTrigger value="hotels" className="flex-1">Hotels</TabsTrigger>
@@ -286,8 +287,8 @@ const Hotels = () => {
         
         {/* Background image */}
         <ParticleBackground 
-          className="absolute inset-0 z-0" 
-          imageSrc="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2670&auto=format&fit=crop"
+          className="absolute inset-0" 
+          imageSrc="public/lovable-uploads/70dd7234-3abe-46f5-8f94-7777c105951a.png"
           overlayColor="bg-gradient-to-r from-purple-600/80 to-indigo-700/80" 
         />
       </section>
