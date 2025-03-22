@@ -287,7 +287,7 @@ const Hotels = () => {
         {/* Background image */}
         <ParticleBackground 
           className="absolute inset-0 z-0" 
-          imageSrc="/lovable-uploads/857e900c-0073-4929-ad0e-724f433432b9.png"
+          imageSrc="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2670&auto=format&fit=crop"
           overlayColor="bg-gradient-to-r from-purple-600/80 to-indigo-700/80" 
         />
       </section>

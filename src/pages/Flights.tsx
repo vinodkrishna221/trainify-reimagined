@@ -127,7 +127,7 @@ const Flights = () => {
         </div>
         <ParticleBackground 
           className="absolute inset-0 z-0" 
-          imageSrc="/lovable-uploads/73d251cc-0052-4078-862b-c0c2372876c7.png"
+          imageSrc="https://images.unsplash.com/photo-1606768666853-403c90a981ad?q=80&w=2671&auto=format&fit=crop"
           overlayColor="bg-gradient-to-r from-blue-600/70 to-purple-600/70"
           overlayOpacity={0.7}
         />

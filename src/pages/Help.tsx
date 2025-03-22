@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, HelpCircle, BookOpen, MessageCircle, Phone, Mail, FileText, CreditCard, Clock, Calendar, Train, Plane, Building } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
@@ -19,7 +18,12 @@ const Help = () => {
     <MainLayout>
       {/* Hero Section with Particles */}
       <section className="relative bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-16 overflow-hidden">
-        <ParticleBackground className="absolute inset-0" />
+        <ParticleBackground 
+          className="absolute inset-0" 
+          imageSrc="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2672&auto=format&fit=crop"
+          overlayColor="bg-gradient-to-r from-blue-600/80 to-indigo-800/80"
+          overlayOpacity={0.75}
+        />
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">How Can We Help You?</h1>
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
