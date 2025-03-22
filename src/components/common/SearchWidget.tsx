@@ -83,10 +83,10 @@ const SearchWidget = memo(() => {
       transition={{ duration: 0.5 }}
       className={cn(
         "w-full max-w-4xl bg-white rounded-xl shadow-lg border border-gray-100",
-        "overflow-visible relative z-10" // Added to ensure dropdown visibility
+        "overflow-visible relative z-20" // Increased z-index to ensure it stays above background
       )}
     >
-      <div className="p-5 md:p-6 lg:p-8">
+      <div className="p-4 md:p-6 lg:p-8">
         <h3 className="text-xl font-semibold text-irctc-dark-gray mb-5">Book Your Train Ticket</h3>
         
         <div className={cn(
@@ -94,7 +94,7 @@ const SearchWidget = memo(() => {
           isMobile ? "grid-cols-1" : "grid-cols-7"
         )}>
           {/* From Station */}
-          <div className={isMobile ? "col-span-1" : "col-span-3"}>
+          <div className={isMobile ? "col-span-1 mb-2" : "col-span-3"}>
             <StationInput
               label="From"
               value={fromStation}
@@ -105,7 +105,10 @@ const SearchWidget = memo(() => {
           </div>
           
           {/* Swap Button */}
-          <div className="flex items-center justify-center col-span-1">
+          <div className={cn(
+            "flex items-center justify-center",
+            isMobile ? "col-span-1 my-2" : "col-span-1"
+          )}>
             <motion.div 
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -120,7 +123,7 @@ const SearchWidget = memo(() => {
           </div>
 
           {/* To Station */}
-          <div className={isMobile ? "col-span-1" : "col-span-3"}>
+          <div className={isMobile ? "col-span-1 mb-2" : "col-span-3"}>
             <StationInput
               label="To"
               value={toStation}
@@ -135,6 +138,7 @@ const SearchWidget = memo(() => {
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            className="w-full sm:w-auto"
           >
             <PrefetchLink to="/train-list">
               <Button 
