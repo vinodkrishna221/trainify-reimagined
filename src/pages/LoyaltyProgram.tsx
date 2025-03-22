@@ -88,7 +88,7 @@ const LoyaltyProgram = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6">
               <CreditCard className="w-10 h-10" />
             </div>
@@ -107,7 +107,10 @@ const LoyaltyProgram = () => {
           </div>
         </div>
         
-        <ParticleBackground className="absolute inset-0 z-0" />
+        <ParticleBackground 
+          className="absolute inset-0 z-0" 
+          imageSrc="/lovable-uploads/4194f5fd-a313-4825-a13e-b059b89237cd.png"
+        />
       </section>
       
       {/* How It Works */}

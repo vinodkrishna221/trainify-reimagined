@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Package, MapPin, Calendar, Users, Clock, Bookmark, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import Button from '@/components/common/Button';
+import ParticleBackground from '@/components/common/ParticleBackground';
 
 const HolidayPackages = () => {
   const holidayPackages = [
@@ -99,7 +99,7 @@ const HolidayPackages = () => {
     <MainLayout>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Discover India with Our Holiday Packages</h1>
             <p className="text-xl text-white/90 mb-8">
@@ -116,8 +116,11 @@ const HolidayPackages = () => {
           </div>
         </div>
         
-        {/* Background particle effect */}
-        <div id="particles-js" className="absolute inset-0 z-0"></div>
+        {/* Background image instead of particle effect */}
+        <ParticleBackground 
+          className="absolute inset-0 z-0" 
+          imageSrc="/lovable-uploads/a9222fa6-6a69-47ad-a9d6-43a91658ef38.png"
+        />
       </section>
       
       {/* Featured Packages */}

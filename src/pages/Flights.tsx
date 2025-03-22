@@ -111,7 +111,7 @@ const Flights = () => {
     <MainLayout>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Book Your Flight Tickets</h1>
             <p className="text-xl text-white/90 mb-8">
@@ -123,7 +123,10 @@ const Flights = () => {
             </Button>
           </div>
         </div>
-        <ParticleBackground className="absolute inset-0 z-0" />
+        <ParticleBackground 
+          className="absolute inset-0 z-0" 
+          imageSrc="/lovable-uploads/21a24ed9-f05e-450f-912c-c2abc0b2214c.png"
+        />
       </section>
 
       {/* Search and Filter Section */}

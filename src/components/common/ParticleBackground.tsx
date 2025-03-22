@@ -1,95 +1,48 @@
 
-import React, { useCallback } from 'react';
-import Particles from 'react-tsparticles';
-import type { Engine } from 'tsparticles-engine';
-import { loadSlim } from 'tsparticles-slim';
+import React, { useEffect, useState } from 'react';
 
 interface ParticleBackgroundProps {
   className?: string;
+  imageSrc?: string;
+  children?: React.ReactNode;
 }
 
-const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ className }) => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ 
+  className, 
+  imageSrc = '/lovable-uploads/d69e29d2-3007-48e6-851c-ad9df37c83a4.png',
+  children 
+}) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if viewing on mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Add event listener
+    window.addEventListener('resize', checkMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   return (
-    <Particles
-      className={className}
-      init={particlesInit}
-      options={{
-        background: {
-          color: {
-            value: 'transparent',
-          },
-        },
-        fpsLimit: 60,
-        interactivity: {
-          events: {
-            onClick: {
-              enable: true,
-              mode: 'push',
-            },
-            onHover: {
-              enable: true,
-              mode: 'repulse',
-            },
-            resize: true,
-          },
-          modes: {
-            push: {
-              quantity: 4,
-            },
-            repulse: {
-              distance: 100,
-              duration: 0.4,
-            },
-          },
-        },
-        particles: {
-          color: {
-            value: '#ffffff',
-          },
-          links: {
-            color: '#ffffff',
-            distance: 150,
-            enable: true,
-            opacity: 0.3,
-            width: 1,
-          },
-          collisions: {
-            enable: true,
-          },
-          move: {
-            direction: 'none',
-            enable: true,
-            outModes: {
-              default: 'bounce',
-            },
-            random: false,
-            speed: 1,
-            straight: false,
-          },
-          number: {
-            density: {
-              enable: true,
-              area: 800,
-            },
-            value: 80,
-          },
-          opacity: {
-            value: 0.3,
-          },
-          shape: {
-            type: 'circle',
-          },
-          size: {
-            value: { min: 1, max: 5 },
-          },
-        },
-        detectRetina: true,
-      }}
-    />
+    <div className={`absolute inset-0 z-0 overflow-hidden ${className}`}>
+      <div 
+        className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+        style={{ 
+          backgroundImage: `url(${imageSrc})`,
+          // Apply different opacity and scaling based on device size
+          opacity: 0.8,
+          backgroundSize: isMobile ? '200% auto' : 'cover'
+        }}
+      />
+      {children}
+    </div>
   );
 };
 

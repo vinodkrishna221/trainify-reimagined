@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
@@ -21,6 +20,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import ParticleBackground from '@/components/common/ParticleBackground';
 
 // Mock train status data
 const trainStatus = {
@@ -153,11 +153,9 @@ const TrackTrain = () => {
     setShowTrackingInfo(true);
   };
 
-  // Simulate live updates effect for train movement
   useEffect(() => {
     if (showTrackingInfo && liveTracking) {
       const interval = setInterval(() => {
-        // In a real app, this would update the train's position
         toast({
           title: "Live Update",
           description: "Train location updated",
@@ -168,10 +166,8 @@ const TrackTrain = () => {
     }
   }, [showTrackingInfo, liveTracking, toast]);
 
-  // Calculate current position for the train progress indicator
   const positionPercentage = trainStatus.journey.percentageComplete;
 
-  // Station positions for the animated track visualization (percentage-based)
   const stationPositions = trainStatus.stations.map(station => 
     (station.distance / trainStatus.journey.totalDistance) * 100
   );
@@ -183,15 +179,20 @@ const TrackTrain = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-12 relative z-10"
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-irctc-dark-gray">Track Your Train</h1>
-          <p className="text-irctc-medium-gray mt-3 max-w-2xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold text-white">Track Your Train</h1>
+          <p className="text-white/90 mt-3 max-w-2xl mx-auto">
             Get real-time updates on train location, arrival times, and platform information
           </p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
+        <ParticleBackground 
+          className="absolute inset-0 z-0 top-0" 
+          imageSrc="/lovable-uploads/b8671a0b-8f59-4020-b9bc-44d38f0254aa.png" 
+        />
+
+        <div className="max-w-4xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
