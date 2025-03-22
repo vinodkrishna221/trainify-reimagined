@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plane, Calendar, Users, Search, Star, Wifi, CreditCard, Coffee, 
-         MapPin, Filter, ArrowRight, ArrowUpDown, Tv as TvIcon } from 'lucide-react';
+         MapPin, Filter, ArrowRight, ArrowUpDown, Tv as TvIcon, 
+         ChevronsUpDown, AlertCircle, Bookmark } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import { Button } from '@/components/ui/button';
