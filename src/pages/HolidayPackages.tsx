@@ -116,10 +116,11 @@ const HolidayPackages = () => {
           </div>
         </div>
         
-        {/* Background image instead of particle effect */}
+        {/* Background image */}
         <ParticleBackground 
           className="absolute inset-0 z-0" 
-          imageSrc="/lovable-uploads/a9222fa6-6a69-47ad-a9d6-43a91658ef38.png"
+          imageSrc="/lovable-uploads/b3a9dcf8-aa76-41f5-a224-852da6abb725.png"
+          overlayColor="bg-gradient-to-r from-blue-500/70 to-purple-600/70"
         />
       </section>
       

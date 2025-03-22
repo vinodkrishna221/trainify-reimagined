@@ -284,8 +284,12 @@ const Hotels = () => {
           </div>
         </div>
         
-        {/* Background particle effect */}
-        <ParticleBackground className="absolute inset-0 z-0" />
+        {/* Background image */}
+        <ParticleBackground 
+          className="absolute inset-0 z-0" 
+          imageSrc="/lovable-uploads/857e900c-0073-4929-ad0e-724f433432b9.png"
+          overlayColor="bg-gradient-to-r from-purple-600/80 to-indigo-700/80" 
+        />
       </section>
       
       {/* Popular Cities Section */}

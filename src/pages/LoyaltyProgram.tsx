@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CreditCard, Award, Gift, ArrowRight, BarChart, Users, Medal } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
@@ -109,7 +108,8 @@ const LoyaltyProgram = () => {
         
         <ParticleBackground 
           className="absolute inset-0 z-0" 
-          imageSrc="/lovable-uploads/4194f5fd-a313-4825-a13e-b059b89237cd.png"
+          imageSrc="/lovable-uploads/393f7a95-494b-416a-81e5-5b87fa67f376.png"
+          overlayColor="bg-gradient-to-r from-blue-600/80 to-purple-700/80"
         />
       </section>
       
@@ -352,7 +352,7 @@ const ArrowUpCircle = ({ className }: { className?: string }) => (
 
 const Hotel = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
+    <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
     <path d="m9 16 .348-.24c1.465-1.013 3.84-1.013 5.304 0L15 16" />
     <path d="M8 7h.01" />
     <path d="M16 7h.01" />

@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plane, Calendar, Users, ArrowRight, Filter, TrendingUp, RotateCcw, 
-         Bookmark, ChevronsUpDown, Clock, AlertCircle } from 'lucide-react';
+import { Plane, Calendar, Users, Search, Star, Wifi, CreditCard, Coffee, 
+         MapPin, Filter, ArrowRight, ArrowUpDown, Tv as TvIcon } from 'lucide-react';
 import MainLayout from '@/layouts/MainLayout';
 import Card from '@/components/common/Card';
 import { Button } from '@/components/ui/button';
@@ -125,7 +126,9 @@ const Flights = () => {
         </div>
         <ParticleBackground 
           className="absolute inset-0 z-0" 
-          imageSrc="/lovable-uploads/21a24ed9-f05e-450f-912c-c2abc0b2214c.png"
+          imageSrc="/lovable-uploads/73d251cc-0052-4078-862b-c0c2372876c7.png"
+          overlayColor="bg-gradient-to-r from-blue-600/70 to-purple-600/70"
+          overlayOpacity={0.7}
         />
       </section>
 

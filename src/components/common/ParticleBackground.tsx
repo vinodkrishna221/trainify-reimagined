@@ -5,12 +5,18 @@ interface ParticleBackgroundProps {
   className?: string;
   imageSrc?: string;
   children?: React.ReactNode;
+  overlay?: boolean;
+  overlayColor?: string;
+  overlayOpacity?: number;
 }
 
 const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ 
   className, 
-  imageSrc = '/lovable-uploads/d69e29d2-3007-48e6-851c-ad9df37c83a4.png',
-  children 
+  imageSrc,
+  children,
+  overlay = true,
+  overlayColor = 'bg-gradient-to-r from-blue-600/90 to-purple-600/90',
+  overlayOpacity = 0.8
 }) => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -32,15 +38,24 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = ({
 
   return (
     <div className={`absolute inset-0 z-0 overflow-hidden ${className}`}>
+      {/* Background image */}
       <div 
         className="absolute inset-0 bg-no-repeat bg-cover bg-center"
         style={{ 
           backgroundImage: `url(${imageSrc})`,
-          // Apply different opacity and scaling based on device size
-          opacity: 0.8,
-          backgroundSize: isMobile ? '200% auto' : 'cover'
+          backgroundSize: isMobile ? '250% auto' : 'cover',
+          backgroundPosition: isMobile ? 'center center' : 'center'
         }}
       />
+      
+      {/* Optional overlay */}
+      {overlay && (
+        <div 
+          className={`absolute inset-0 ${overlayColor}`}
+          style={{ opacity: overlayOpacity }}
+        />
+      )}
+      
       {children}
     </div>
   );
